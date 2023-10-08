@@ -9,6 +9,8 @@ require("./configs/db_config");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var rolesRouter = require("./routes/roles_router");
+var attributeRouter = require('./routes/attribute_router');
+var saleRouter = require('./routes/sale_router');
 
 var app = express();
 
@@ -26,6 +28,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/roles", rolesRouter);
+app.use("/attribute",attributeRouter);
+app.use("/sale",saleRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
