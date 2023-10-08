@@ -1,4 +1,3 @@
-// const mongoose = require("mongoose");
 const db = require('../configs/db_config')
 
 const RoleSchema = new db.Schema({
@@ -7,9 +6,9 @@ const RoleSchema = new db.Schema({
     required: true,
   },
 }, {
-    collection: 'roles'
+    collection: 'Roles'
 });
 
-const RoleModel = db.model("Roles", RoleSchema);
+const RoleModel = db.model("RoleModel", RoleSchema);
 
 module.exports = RoleModel;

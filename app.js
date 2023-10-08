@@ -9,6 +9,8 @@ require("./configs/db_config");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var rolesRouter = require("./routes/roles_router");
+var categoriesRouter = require("./routes/categories_router");
+var setPricesRouter = require("./routes/set_prices_router");
 var attributeRouter = require('./routes/attribute_router');
 var saleRouter = require('./routes/sale_router');
 
@@ -28,6 +30,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/roles", rolesRouter);
+app.use("/categories", categoriesRouter);
+app.use("/set-prices", setPricesRouter);
 app.use("/attribute",attributeRouter);
 app.use("/sale",saleRouter);
 
