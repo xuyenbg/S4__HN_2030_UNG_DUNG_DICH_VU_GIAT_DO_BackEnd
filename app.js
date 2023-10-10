@@ -7,12 +7,13 @@ var bodyParser = require("body-parser");
 require("./configs/db_config");
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+var usersRouter = require("./routes/users_router");
 var rolesRouter = require("./routes/roles_router");
 var categoriesRouter = require("./routes/categories_router");
-var setPricesRouter = require("./routes/set_prices_router");
 var attributeRouter = require('./routes/attribute_router');
 var saleRouter = require('./routes/sale_router');
+var addressRouter = require('./routes/address_router')
+var storeRouter = require('./routes/stores_router')
 
 var app = express();
 
@@ -31,9 +32,10 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/roles", rolesRouter);
 app.use("/categories", categoriesRouter);
-app.use("/set-prices", setPricesRouter);
 app.use("/attribute",attributeRouter);
 app.use("/sale",saleRouter);
+app.use('/address', addressRouter)
+app.use('/stores', storeRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
