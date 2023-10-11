@@ -26,7 +26,7 @@ const ServiceSchema = new db.Schema({
         required: true,
         ref: "CategoryModel"
     },
-    sale: {
+    idSale: {
         type: db.Schema.Types.ObjectId,
         required: true,
         ref: "SaleModel"

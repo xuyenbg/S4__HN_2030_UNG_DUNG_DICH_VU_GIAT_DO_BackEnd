@@ -2,7 +2,7 @@ const UserModel = require('../models/users_model')
 
 exports.getListUser = async (req, res) => {
     try {
-        const listUser = await UserModel.find().populate('idRole');
+        const listUser = await UserModel.find().populate('idRole').populate('favoriteStores');
 
         res.json(listUser);
     } catch (e) {

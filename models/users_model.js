@@ -20,11 +20,9 @@ const UserSchema = new db.Schema({
     },
     favoriteStores: [
         {
-            idStore: {
-                type: db.Schema.ObjectId,
-                required: false,
-                ref: "StoreModel"
-            }
+            type: db.Schema.ObjectId,
+            required: false,
+            ref: "StoreModel"
         }
     ],
     createAt: {
