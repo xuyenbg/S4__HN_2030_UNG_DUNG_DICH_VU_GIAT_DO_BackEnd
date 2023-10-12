@@ -5,6 +5,6 @@ exports.getListNotification = async (req,res)=>{
         const listNotification = await NotificationModel.find().populate('idOrder').populate('idUser');
         res.status(200).json(listNotification);
     } catch (error) {
-        res.status(500).send("Có lỗi xảy ra");s
+        res.status(500).send("Có lỗi xảy ra");
     }
 }
