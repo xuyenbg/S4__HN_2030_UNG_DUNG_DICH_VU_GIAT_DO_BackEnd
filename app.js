@@ -4,8 +4,11 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
+const swaggerjsdoc = require('swagger-jsdoc')
+const swaggerui = require('swagger-ui-express')
 require("./configs/db_config");
 
+// Web Server
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users_router");
 var rolesRouter = require("./routes/roles_router");
@@ -20,6 +23,10 @@ var orderRouter = require('./routes/order_router');
 var itemServiceRouter = require('./routes/itemService_router');
 var notificationRouter = require('./routes/notification_router');
 
+// API
+var rolesApiRouter = require('./routes/api_routers/roles_api_router')
+
+
 var app = express();
 
 // view engine setup
@@ -33,6 +40,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
+// Web Server
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/roles", rolesRouter);
@@ -46,6 +55,28 @@ app.use('/rates',ratesRouter);
 app.use('/order',orderRouter);
 app.use('/itemservice',itemServiceRouter);
 app.use('/notification',notificationRouter);
+
+// API
+app.use("/api/roles", rolesApiRouter)
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Wash Now Api Docs",
+      version: "1.0.0",
+    },
+    servers: [
+      {
+        url: "http://localhost:3000"
+      }
+    ]
+  },
+  apis: ["./routes/*.js"]
+}
+
+const spacs = swaggerjsdoc(options)
+app.use('/api-docs', swaggerui.serve, swaggerui.setup(spacs))
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
