@@ -15,6 +15,10 @@ var saleRouter = require('./routes/sale_router');
 var addressRouter = require('./routes/address_router')
 var storeRouter = require('./routes/stores_router')
 var servicesRouter = require('./routes/services_router')
+var ratesRouter = require('./routes/rates_router');
+var orderRouter = require('./routes/order_router');
+var itemServiceRouter = require('./routes/itemService_router');
+var notificationRouter = require('./routes/notification_router');
 
 var app = express();
 
@@ -38,6 +42,10 @@ app.use("/sales",saleRouter);
 app.use('/address', addressRouter)
 app.use('/stores', storeRouter)
 app.use('/services', servicesRouter)
+app.use('/rates',ratesRouter);
+app.use('/order',orderRouter);
+app.use('/itemservice',itemServiceRouter);
+app.use('/notification',notificationRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
