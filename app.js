@@ -25,7 +25,8 @@ var notificationRouter = require('./routes/notification_router');
 
 // API
 var rolesApiRouter = require('./routes/api_routers/roles_api_router')
-
+var loginApiRouter = require('./routes/api_routers/login_api_router')
+var userApiRouter = require('./routes/api_routers/users_api_router')
 
 var app = express();
 
@@ -58,6 +59,8 @@ app.use('/notification',notificationRouter);
 
 // API
 app.use("/api/roles", rolesApiRouter)
+app.use('/api/login', loginApiRouter)
+app.use('/api/users', userApiRouter)
 
 const options = {
   definition: {
