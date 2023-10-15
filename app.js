@@ -31,6 +31,13 @@ var categoriesApiRouter = require('./routes/api_routers/categories_api_router')
 var addressApiRouter = require('./routes/api_routers/address_api_router')
 var servicesApiRouter = require('./routes/api_routers/services_api_router')
 var storeApiRouter = require('./routes/api_routers/stores_api_router')
+var attributeApiRouter = require('./routes/api_routers/attribute_api_router');
+var saleApiRouter = require('./routes/api_routers/sale_router');
+var itemServiceApiRouter = require('./routes/api_routers/itemService_api_router');
+var notificationApiRouter = require('./routes/api_routers/notification_api_router');
+var orderApiRouter = require('./routes/api_routers/order_api_router');
+var ratesApiRouter = require('./routes/api_routers/rates_api_router');
+var registerApiRouter = require('./routes/api_routers/register_api_router');
 
 var app = express();
 
@@ -69,6 +76,13 @@ app.use('/api/categories', categoriesApiRouter)
 app.use('/api/address', addressApiRouter)
 app.use('/api/services', servicesApiRouter)
 app.use('/api/stores', storeApiRouter)
+app.use('/api/attributes',attributeApiRouter);
+app.use('/api/sales',saleApiRouter);
+app.use('/api/itemservice',itemServiceApiRouter);
+app.use('/api/notification',notificationApiRouter);
+app.use('/api/order',orderApiRouter);
+app.use('/api/rates',ratesApiRouter);
+app.use('/api/register',registerApiRouter);
 
 const options = {
     definition: {
