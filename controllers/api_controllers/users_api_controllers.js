@@ -67,7 +67,7 @@ const isValidPassword = (password)=>{
 
 exports.register = async (req,res)=>{
     var objUser =  new UserModel()
-    objUser.phone= req.body.phone;
+        objUser.phone= req.body.phone;
         objUser.passwd= req.body.passwd;
         objUser.fullname = req.body.fullname;
         objUser.username=req.body.username;
@@ -75,43 +75,60 @@ exports.register = async (req,res)=>{
         objUser.favouriteStores= [];
         objUser.createAt = new Date();
         objUser.updateAt=new Date();
+        objUser.avatar = req.body.avatar
 
     const checkExistUser = await UserModel.findOne({phone: objUser.phone})
 
+    if(objUser.username === undefined){
+        res.status(500).send("Thiếu thuộc tính username");
+        return;
+    }
+    if(objUser.phone === undefined){
+        res.status(500).send("Thiếu thuộc tính phone");
+        return;
+    }
+    if(objUser.passwd === undefined){
+        res.status(500).send("Thiếu thuộc tính passwd");
+        return;
+    }
+    if(objUser.fullname === undefined){
+        res.status(500).send("Thiếu thuộc tính fullname");
+        return;
+    }
     if(objUser.username.length === 0 ){
-        res.status(200).send("Tên tài khoản không được bỏ trống");
+        res.status(401).send("Tên tài khoản không được bỏ trống");
         return;
     }
      else if (!isValidUsername(objUser.username))
     {
-       res.status(200).send("Tên tài khoản phải không được vượt quá 18 ký tự và chữ cái đầu phải viết hoa")
+       res.status(401).send("Tên tài khoản phải không được vượt quá 18 ký tự và chữ cái đầu phải viết hoa")
         return;
     }
 
     if(objUser.phone.length === 0 ){
-        res.status(200).send('Số điện thoại không được bỏ trống')
+        res.status(401).send('Số điện thoại không được bỏ trống')
         return;
     }
     else if(!isValidPhone(objUser.phone))
     {
-        res.status(200).send('Số điện thoại không đúng định dạng');
+        res.status(401).send('Số điện thoại không đúng định dạng');
         return;
     }
     else if(checkExistUser !== null){
-        res.status(200).send("Số điện thoại đã được đăng ký");
+        res.status(401).send("Số điện thoại đã được đăng ký");
         return;
     }
 
     if(objUser.passwd.length === 0){
-        res.status(200).send("Mật khâu không được bỏ trống");
+        res.status(401).send("Mật khâu không được bỏ trống");
         return;
     }
     else if(!isValidPassword(objUser.passwd)){
-        res.status(200).send("Mật khẩu không đúng định dạng phải có ít nhất 10 ký tự và chữ cái đầu phải viết hoa");
+        res.status(401).send("Mật khẩu không đúng định dạng phải có ít nhất 10 ký tự và chữ cái đầu phải viết hoa");
         return;
     }
     if(objUser.fullname.length === 0){
-        res.status(200).send("Họ và tên không được bỏ trống");
+        res.status(401).send("Họ và tên không được bỏ trống");
         return;
     }
     try {
@@ -121,5 +138,4 @@ exports.register = async (req,res)=>{
         console.log(error.message)
         res.status(500).send(error);
     }
-
 }
