@@ -25,6 +25,9 @@ const UserSchema = new db.Schema({
             ref: "StoreModel"
         }
     ],
+    avatar:{
+      type:db.Schema.Types.String
+    },
     createAt: {
         type: Date,
         required: false,
