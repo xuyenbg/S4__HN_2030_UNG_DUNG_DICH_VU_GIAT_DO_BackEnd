@@ -33,14 +33,6 @@ exports.login = async (req, res) => {
 }
 
 //validate username
-const isValidUsername =(username) =>{
-    const usernameRegex = /^[A-Z][A-Za-z0-9]{0,17}$/;
-    if (username.match(usernameRegex)) {
-        return true;
-    }
-
-    return false;
-}
 
 // validate phone
 const isValidPhone= (phone)=>{
@@ -70,7 +62,6 @@ exports.register = async (req,res)=>{
         objUser.phone= req.body.phone;
         objUser.passwd= req.body.passwd;
         objUser.fullname = req.body.fullname;
-        objUser.username=req.body.username;
         objUser.idRole=req.body.idRole;
         objUser.favouriteStores= [];
         objUser.createAt = new Date();
@@ -79,10 +70,6 @@ exports.register = async (req,res)=>{
 
     const checkExistUser = await UserModel.findOne({phone: objUser.phone})
 
-    if(objUser.username === undefined){
-        res.status(500).send("Thiếu thuộc tính username");
-        return;
-    }
     if(objUser.phone === undefined){
         res.status(500).send("Thiếu thuộc tính phone");
         return;
@@ -95,15 +82,7 @@ exports.register = async (req,res)=>{
         res.status(500).send("Thiếu thuộc tính fullname");
         return;
     }
-    if(objUser.username.length === 0 ){
-        res.status(401).send("Tên tài khoản không được bỏ trống");
-        return;
-    }
-     else if (!isValidUsername(objUser.username))
-    {
-       res.status(401).send("Tên tài khoản phải không được vượt quá 18 ký tự và chữ cái đầu phải viết hoa")
-        return;
-    }
+
 
     if(objUser.phone.length === 0 ){
         res.status(401).send('Số điện thoại không được bỏ trống')
