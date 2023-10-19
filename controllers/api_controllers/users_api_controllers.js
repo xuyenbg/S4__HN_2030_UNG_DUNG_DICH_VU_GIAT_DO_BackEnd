@@ -35,7 +35,7 @@ exports.login = async (req, res) => {
 //validate username
 
 // validate phone
-const isValidPhone= (phone)=>{
+const isValidPhone = (phone) => {
     const phoneRegex = /^0[0-9]{9}$/;
 
     if (phone.match(phoneRegex)) {
@@ -47,7 +47,7 @@ const isValidPhone= (phone)=>{
 
 // validate pass
 
-const isValidPassword = (password)=>{
+const isValidPassword = (password) => {
     const passwordRegex = /^[A-Z][A-Za-z0-9]{9,}$/;
 
     if (password.match(passwordRegex)) {
@@ -57,57 +57,55 @@ const isValidPassword = (password)=>{
     return false;
 }
 
-exports.register = async (req,res)=>{
-    var objUser =  new UserModel()
-        objUser.phone= req.body.phone;
-        objUser.passwd= req.body.passwd;
-        objUser.fullname = req.body.fullname;
-        objUser.idRole=req.body.idRole;
-        objUser.favouriteStores= [];
-        objUser.createAt = new Date();
-        objUser.updateAt=new Date();
-        objUser.avatar = req.body.avatar
+exports.register = async (req, res) => {
+    var objUser = new UserModel()
+    objUser.phone = req.body.phone;
+    objUser.passwd = req.body.passwd;
+    objUser.fullname = req.body.fullname;
+    objUser.idRole = req.body.idRole;
+    objUser.favouriteStores = [];
+    objUser.createAt = new Date();
+    objUser.updateAt = new Date();
+    objUser.avatar = req.body.avatar
 
     const checkExistUser = await UserModel.findOne({phone: objUser.phone})
 
-    if(objUser.phone === undefined){
+    if (objUser.phone === undefined) {
         res.status(500).send("Thiếu thuộc tính phone");
         return;
     }
-    if(objUser.passwd === undefined){
+    if (objUser.passwd === undefined) {
         res.status(500).send("Thiếu thuộc tính passwd");
         return;
     }
-    if(objUser.fullname === undefined){
+    if (objUser.fullname === undefined) {
         res.status(500).send("Thiếu thuộc tính fullname");
         return;
     }
-    if(objUser.username.length === 0 ){
-        res.status(401).send("Tên tài khoản không được bỏ trống");
-        return;
-    }
 
-
-    if(objUser.phone.length === 0 ){
+    if (objUser.phone.length === 0) {
         res.status(401).send('Số điện thoại không được bỏ trống')
         return;
     }
 
+    if(checkExistUser != null){
+        res.status(401).send('Số điện thoại đã tồn tại')
+        return;
+    }
 
-
-    if(objUser.passwd.length === 0){
+    if (objUser.passwd.length === 0) {
         res.status(401).send("Mật khẩu không được bỏ trống");
         return;
     }
 
-    if(objUser.fullname.length === 0){
+    if (objUser.fullname.length === 0) {
         res.status(401).send("Họ và tên không được bỏ trống");
         return;
     }
     try {
         await objUser.save();
         res.status(200).send("Đăng ký thành công");
-    }catch (error){
+    } catch (error) {
         console.log(error.message)
         res.status(500).send(error);
     }
