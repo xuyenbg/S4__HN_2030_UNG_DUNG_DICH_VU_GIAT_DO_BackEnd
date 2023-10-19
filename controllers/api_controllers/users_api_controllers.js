@@ -82,30 +82,24 @@ exports.register = async (req,res)=>{
         res.status(500).send("Thiếu thuộc tính fullname");
         return;
     }
+    if(objUser.username.length === 0 ){
+        res.status(401).send("Tên tài khoản không được bỏ trống");
+        return;
+    }
 
 
     if(objUser.phone.length === 0 ){
         res.status(401).send('Số điện thoại không được bỏ trống')
         return;
     }
-    else if(!isValidPhone(objUser.phone))
-    {
-        res.status(401).send('Số điện thoại không đúng định dạng');
-        return;
-    }
-    else if(checkExistUser !== null){
-        res.status(401).send("Số điện thoại đã được đăng ký");
+
+
+
+    if(objUser.passwd.length === 0){
+        res.status(401).send("Mật khẩu không được bỏ trống");
         return;
     }
 
-    if(objUser.passwd.length === 0){
-        res.status(401).send("Mật khâu không được bỏ trống");
-        return;
-    }
-    else if(!isValidPassword(objUser.passwd)){
-        res.status(401).send("Mật khẩu không đúng định dạng phải có ít nhất 10 ký tự và chữ cái đầu phải viết hoa");
-        return;
-    }
     if(objUser.fullname.length === 0){
         res.status(401).send("Họ và tên không được bỏ trống");
         return;
