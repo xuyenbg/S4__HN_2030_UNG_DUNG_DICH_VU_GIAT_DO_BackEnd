@@ -63,7 +63,7 @@ exports.register = async (req, res) => {
     objUser.passwd = req.body.passwd;
     objUser.fullname = req.body.fullname;
     objUser.idRole = req.body.idRole;
-    objUser.favouriteStores = [];
+    objUser.favoriteStores = [];
     objUser.createAt = new Date();
     objUser.updateAt = new Date();
     objUser.avatar = req.body.avatar
