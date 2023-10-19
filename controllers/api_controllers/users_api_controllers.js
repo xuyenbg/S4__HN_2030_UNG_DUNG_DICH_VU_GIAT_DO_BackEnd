@@ -109,7 +109,7 @@ exports.register = async (req,res)=>{
 
 
     if(objUser.passwd.length === 0){
-        res.status(401).send("Mật khâu không được bỏ trống");
+        res.status(401).send("Mật khẩu không được bỏ trống");
         return;
     }
 
