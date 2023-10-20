@@ -10,6 +10,7 @@ require("./configs/db_config");
 
 // Web Server
 var indexRouter = require("./routes/index");
+var authRouter = require('./routes/auth_router')
 var usersRouter = require("./routes/users_router");
 var rolesRouter = require("./routes/roles_router");
 var categoriesRouter = require("./routes/categories_router");
@@ -20,7 +21,7 @@ var storeRouter = require('./routes/stores_router')
 var servicesRouter = require('./routes/services_router')
 var ratesRouter = require('./routes/rates_router');
 var orderRouter = require('./routes/order_router');
-var itemServiceRouter = require('./routes/itemService_router');
+var itemServiceRouter = require('./routes/item_service_router');
 var notificationRouter = require('./routes/notification_router');
 
 // API
@@ -33,7 +34,7 @@ var servicesApiRouter = require('./routes/api_routers/services_api_router')
 var storeApiRouter = require('./routes/api_routers/stores_api_router')
 var attributeApiRouter = require('./routes/api_routers/attribute_api_router');
 var saleApiRouter = require('./routes/api_routers/sale_router');
-var itemServiceApiRouter = require('./routes/api_routers/itemService_api_router');
+var itemServiceApiRouter = require('./routes/api_routers/item_service_api_router');
 var notificationApiRouter = require('./routes/api_routers/notification_api_router');
 var orderApiRouter = require('./routes/api_routers/order_api_router');
 var ratesApiRouter = require('./routes/api_routers/rates_api_router');
@@ -55,6 +56,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // Web Server
 app.use("/", indexRouter);
+app.use('/auth', authRouter)
 app.use("/users", usersRouter);
 app.use("/roles", rolesRouter);
 app.use("/categories", categoriesRouter);
