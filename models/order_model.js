@@ -1,49 +1,50 @@
-const db =require('../configs/db_config');
+const db = require('../configs/db_config');
 
 const OrderSchema = new db.Schema(
     {
-        idUser:{
-            type:db.Schema.Types.ObjectId,
-            required:true,
-            ref:'UserModel'
+        idUser: {
+            type: db.Schema.Types.ObjectId,
+            required: false,
+            ref: 'UserModel'
         },
-        idStore:{
-            type:db.Schema.Types.ObjectId,
-            required:true,
-            ref:"StoreModel"
+        idStore: {
+            type: db.Schema.Types.ObjectId,
+            required: false,
+            ref: "StoreModel"
         },
-        total:{
-            type:Number,
-            required:true
+        total: {
+            type: Number,
+            required: false,
+            default: 0
         },
-        note:{
-            type:String,
-            required:true
+        note: {
+            type: String,
+            required: false
         },
-        transportType:{
-            type:Number,
-            required:true
+        transportType: {
+            type: String,
+            required: false
         },
-        methodPaymentType :{
-            type:Number,
-            required:true
+        methodPaymentType: {
+            type: String,
+            required: false
         },
-        feeDelivery:{
-            type:Number,
-            required:true
+        feeDelivery: {
+            type: Number,
+            required: false
         },
-        status:{
-            type:Number,
-            required:true
+        status: {
+            type: Number,
+            required: false
         },
-        idAddress:{
-            type:db.Schema.Types.ObjectId,
-            required:true,
-            ref:'AddressModel'
+        idAddress: {
+            type: db.Schema.Types.ObjectId,
+            required: false,
+            ref: 'AddressModel'
         },
-        isPaid:{
-            type:Boolean,
-            required:true
+        isPaid: {
+            type: Boolean,
+            required: false
         },
         createAt: {
             type: Date,
@@ -56,10 +57,10 @@ const OrderSchema = new db.Schema(
             default: Date.now()
         }
 
-    },{
-        collection:"Order"
+    }, {
+        collection: "Order"
     }
 );
-const OrderMd = db.model('OrderModel',OrderSchema);
+const OrderMd = db.model('OrderModel', OrderSchema);
 
 module.exports = OrderMd;

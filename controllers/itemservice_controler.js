@@ -1,4 +1,4 @@
-const ItemServiceModel = require("../models/ItemService_model");
+const ItemServiceModel = require("../models/item_service_model");
 
 exports.getListItemService = async (req, res) => {
   try {

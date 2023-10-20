@@ -7,5 +7,231 @@ exports.getListOrderModel = async (req, res) => {
         res.status(200).json(listOrder);
     } catch (err) {
         res.status(500).send("Có lỗi xảy ra");
+        console.log(err)
     }
 };
+
+exports.insertOrder = async (req, res) => {
+    try {
+        const {
+            idUser,
+            idStore,
+            total,
+            note,
+            transportType,
+            methodPaymentType,
+            feeDelivery,
+            status,
+            idAddress,
+            isPaid
+        } = req.body;
+
+        if (idUser.length === 0) {
+            res.status(400).send("Vui lòng không để trống id người đặt")
+            return
+        }
+
+        if (idStore.length === 0) {
+            res.status(400).send("Vui lòng không để trống id cửa hàng")
+            return
+        }
+
+        if (total.length === 0) {
+            res.status(400).send("Vui lòng không để trống tổng tiền đơn hàng")
+            return
+        }
+
+        if(isNaN(total) === true){
+            res.status(400).send("Vui lòng nhập tổng tiền đơn hàng là số")
+            return
+        }
+
+        if (transportType.length === 0) {
+            res.status(400).send("Vui lòng không để trống phương thức giao hàng")
+            return
+        }
+
+        if (methodPaymentType.length === 0) {
+            res.status(400).send("Vui lòng không để trống phương thức thanh toán")
+            return
+        }
+
+        if (feeDelivery.length === 0) {
+            res.status(400).send("Vui lòng không để trống phí vận chuyển")
+            return
+        }
+
+        if(isNaN(feeDelivery) === true){
+            res.status(400).send("Vui lòng nhập phí vận chuyển là số")
+            return
+        }
+
+        if (status.length === 0) {
+            res.status(400).send("Vui lòng không để trống trạng thái đơn hàng")
+            return
+        }
+
+        if(isNaN(status) === true){
+            res.status(400).send("Vui lòng nhập trạng thái đơn hàng là số")
+            return
+        }
+
+        if (idAddress.length === 0) {
+            res.status(400).send("Vui lòng không để trống id địa chỉ cửa hàng")
+            return
+        }
+
+        if (isPaid.length === 0) {
+            res.status(400).send("Vui lòng không để trống trạng thái thanh toán đơn hàng")
+            return
+        }
+
+        const order = new OrderModel({
+            idUser: idUser,
+            idStore: idStore,
+            total: total,
+            note: note,
+            transportType: transportType,
+            methodPaymentType: methodPaymentType,
+            feeDelivery: feeDelivery,
+            status: status,
+            idAddress: idAddress,
+            isPaid: isPaid
+        })
+
+        await order.save();
+
+        res.send("Tạo đơn thành công")
+    } catch (e) {
+        res.status(500).send("Có lỗi xảy ra");
+        console.log(e)
+    }
+}
+
+exports.updateStatusOrder = async (req, res) => {
+    try {
+        const idOrder = req.params.idOrder
+        const status = req.body.status
+
+        if (status.length === 0) {
+            res.status(400).send("Vui lòng không để trống trạng thái đơn hàng")
+            return
+        }
+
+        if(isNaN(status) === true){
+            res.status(400).send("Vui lòng nhập trạng thái đơn hàng là số")
+            return
+        }
+
+        await OrderModel.findByIdAndUpdate({_id: idOrder},
+            {
+                status: status
+            })
+
+        res.send("Cập nhật trạng thái đơn hàng thành công")
+    } catch (e) {
+        res.status(500).send(`Có lỗi xảy ra ${e}`);
+        console.log(e)
+    }
+}
+
+exports.updateOrder = async (req, res) => {
+    try {
+        const idOrder = req.params.idOrder
+        const {
+            idUser,
+            idStore,
+            total,
+            note,
+            transportType,
+            methodPaymentType,
+            feeDelivery,
+            status,
+            idAddress,
+            isPaid
+        } = req.body;
+
+        if (idUser.length === 0) {
+            res.status(400).send("Vui lòng không để trống id người đặt")
+            return
+        }
+
+        if (idStore.length === 0) {
+            res.status(400).send("Vui lòng không để trống id cửa hàng")
+            return
+        }
+
+        if (total.length === 0) {
+            res.status(400).send("Vui lòng không để trống tổng tiền đơn hàng")
+            return
+        }
+
+        if(isNaN(total) === true){
+            res.status(400).send("Vui lòng nhập tổng tiền đơn hàng là số")
+            return
+        }
+
+        if (transportType.length === 0) {
+            res.status(400).send("Vui lòng không để trống phương thức giao hàng")
+            return
+        }
+
+        if (methodPaymentType.length === 0) {
+            res.status(400).send("Vui lòng không để trống phương thức thanh toán")
+            return
+        }
+
+        if (feeDelivery.length === 0) {
+            res.status(400).send("Vui lòng không để trống phí vận chuyển")
+            return
+        }
+
+        if(isNaN(feeDelivery) === true){
+            res.status(400).send("Vui lòng nhập phí vận chuyển là số")
+            return
+        }
+
+        if (status.length === 0) {
+            res.status(400).send("Vui lòng không để trống trạng thái đơn hàng")
+            return
+        }
+
+        if(isNaN(status) === true){
+            res.status(400).send("Vui lòng nhập trạng thái đơn hàng là số")
+            return
+        }
+
+        if (idAddress.length === 0) {
+            res.status(400).send("Vui lòng không để trống id địa chỉ cửa hàng")
+            return
+        }
+
+        if (isPaid.length === 0) {
+            res.status(400).send("Vui lòng không để trống trạng thái thanh toán đơn hàng")
+            return
+        }
+
+        await OrderModel.findByIdAndUpdate(
+            {
+                _id: idOrder
+            },
+            {
+                idUser: idUser,
+                idStore: idStore,
+                total: total,
+                note: note,
+                transportType: transportType,
+                methodPaymentType: methodPaymentType,
+                feeDelivery: feeDelivery,
+                status: status,
+                idAddress: idAddress,
+                isPaid: isPaid
+            }
+        )
+
+        res.send("Cập nhật thông tin đơn hàng thành công")
+    } catch (e){
+        res.status(500).send(`Có lỗi xảy ra ${e}`);
+        console.log(e)
+    }
+}
