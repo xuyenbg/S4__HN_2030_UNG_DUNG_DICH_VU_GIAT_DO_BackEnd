@@ -235,3 +235,102 @@ exports.updateOrder = async (req, res) => {
         console.log(e)
     }
 }
+
+exports.getOrderDetail = async (req,res) =>{
+    const idOrder = req.params.idOrder;
+    try{
+        const listOrder = await OrderModel.find({"_id": idOrder});
+        res.status(200).json(listOrder);
+
+    }catch (error){
+        res.status(500).send("Có lỗi xảy ra")
+    }
+}
+
+exports.getListOrderByIdUser = async (req,res) =>{
+    const idUser = req.params.idUser;
+    const sortOrder = req.query.sortOrder;
+    const sortOption = sortOrder === 'desc'? {createAt:'desc'} : {createAt:'asc'}
+    try{
+        const listOrder = await OrderModel.find({"idUser": idUser}).sort(sortOption);
+        if(listOrder.length === 0){
+            res.status(204).send("Không có đơn hàng nào")
+        }else{
+            res.status(200).json(listOrder);
+        }
+
+    }catch (error){
+        res.status(500).send("Có lỗi xảy ra")
+    }
+}
+
+exports.getListOrderByIdStoreAndIdUser = async (req,res) =>{
+    const idStore = req.params.idStore;
+    const idUser = req.params.idUser;
+    const sortOrder = req.query.sortOrder;
+
+    const sortOption = sortOrder === 'desc'? {createAt:'desc'} : {createAt:'asc'}
+    try{
+        const listOrder = await OrderModel.find({"idStore": idStore,"idUser":idUser}).sort(sortOption);
+        if(listOrder.length === 0){
+            res.status(204).send("Không có đơn hàng nào")
+        }else{
+            res.status(200).json(listOrder);
+        }
+    }catch (error){
+        res.status(500).send("Có lỗi xảy ra")
+    }
+}
+
+exports.getListOrderByIdStore = async (req,res) =>{
+    const idStore = req.params.idStore;
+    const sortOrder = req.query.sortOrder;
+
+    const sortOption = sortOrder === 'desc'? {createAt:'desc'} : {createAt:'asc'}
+    try{
+        const listOrder = await OrderModel.find({"idStore": idStore}).sort(sortOption);
+        if(listOrder.length === 0){
+            res.status(204).send("Không có đơn hàng nào")
+        }else{
+            res.status(200).json(listOrder);
+        }
+    }catch (error){
+        res.status(500).send("Có lỗi xảy ra")
+    }
+}
+
+exports.getListOrderByStatusAndStoreAndUser = async (req,res) =>{
+    const status = req.params.status;
+    const idStore = req.params.idStore;
+    const idUser = req.params.idUser;
+    const sortOrder = req.query.sortOrder;
+    const sortOption = sortOrder === 'desc'? {createAt:'desc'} : {createAt:'asc'}
+    try{
+        const listOrder = await OrderModel.find({"status": status,"idStore":idStore,"idUser":idUser}).sort(sortOption);
+        if(listOrder === 0){
+            res.status(204).send("Không có đơn hàng nào")
+        }else{
+            res.status(200).json(listOrder);
+        }
+    }catch (error){
+        res.status(500).send("Có lỗi xảy ra"+listOrder)
+    }
+}
+
+exports.getListOrderByStatusAndUser = async (req,res) =>{
+    const status = req.params.status;
+    const idUser = req.params.idUser;
+    const sortOrder = req.query.sortOrder;
+    const sortOption = sortOrder === 'desc'? {createAt:'desc'} : {createAt:'asc'}
+    try{
+        const listOrder = await OrderModel.find({"status": status,"idUser":idUser}).sort(sortOption);
+        if(listOrder === 0){
+            res.status(204).send("Không có đơn hàng nào")
+        }else{
+            res.status(200).json(listOrder);
+        }
+    }catch (error){
+        res.status(500).send("Có lỗi xảy ra"+listOrder)
+    }
+}
+
