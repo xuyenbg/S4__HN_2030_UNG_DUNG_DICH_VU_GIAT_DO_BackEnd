@@ -2,7 +2,7 @@ const OrderModel = require("../../models/order_model");
 
 exports.getListOrderModel = async (req, res) => {
     try {
-        const listOrder = await OrderModel.find().populate('idUser').populate('idStore');
+        const listOrder = await OrderModel.find().populate('idUser').populate('idStore').populate('listItem.idService').populate('listItem.idService.attributeList._id').populate('listItem.attributeList');
 
         res.status(200).json(listOrder);
     } catch (err) {
