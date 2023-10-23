@@ -11,11 +11,13 @@ const ServiceSchema = new db.Schema({
         ref: "StoreModel"
     },
     attributeList: [
-        {
-            type: db.Schema.ObjectId,
-            required: true,
-            ref: "AttributeModel"
-        }
+
+           {
+               type: db.Schema.Types.ObjectId,
+               required: true,
+               ref: "AttributeModel"
+           }
+
     ],
     price: {
         type: Number,
