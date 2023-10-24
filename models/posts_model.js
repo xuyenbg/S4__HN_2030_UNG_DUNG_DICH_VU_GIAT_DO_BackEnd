@@ -17,6 +17,11 @@ const PostSchema = new db.Schema({
     image: {
         type: String,
         required: false
+    },
+    createAt: {
+        type: Date,
+        required: false,
+        default: Date.now()
     }
 }, {
     collection: "Posts"

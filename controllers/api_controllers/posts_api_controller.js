@@ -2,7 +2,7 @@ const PostModel = require('../../models/posts_model')
 
 exports.listPost = async (req, res) => {
     try {
-        const listPost = await PostModel.find()
+        const listPost = await PostModel.find().populate('idStore')
         res.json(listPost)
     } catch (err) {
         res.status(500).send("Có lỗi xảy ra")
@@ -13,7 +13,7 @@ exports.listPost = async (req, res) => {
 exports.listPostByIdStore = async (req, res) => {
     try {
         const idStore = req.params.idStore
-        const listPost = await PostModel.find({ idStore: idStore })
+        const listPost = await PostModel.find({ idStore: idStore }).populate('idStore')
         res.json(listPost)
     } catch (err) {
         res.status(500).send("Có lỗi xảy ra")
