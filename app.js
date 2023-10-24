@@ -38,7 +38,9 @@ var itemServiceApiRouter = require('./routes/api_routers/item_service_api_router
 var notificationApiRouter = require('./routes/api_routers/notification_api_router');
 var orderApiRouter = require('./routes/api_routers/order_api_router');
 var ratesApiRouter = require('./routes/api_routers/rates_api_router');
+var postsApiRouter = require('./routes/api_routers/post_api_router')
 var registerApiRouter = require('./routes/api_routers/register_api_router');
+var imageApiRouter = require('./routes/api_routers/image_api_router')
 
 var app = express();
 
@@ -48,11 +50,10 @@ app.set("view engine", "ejs");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(bodyParser.urlencoded({extended: false}));
-
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Web Server
 app.use("/", indexRouter);
@@ -78,13 +79,15 @@ app.use('/api/categories', categoriesApiRouter)
 app.use('/api/address', addressApiRouter)
 app.use('/api/services', servicesApiRouter)
 app.use('/api/stores', storeApiRouter)
-app.use('/api/attributes',attributeApiRouter);
-app.use('/api/sales',saleApiRouter);
-app.use('/api/itemservice',itemServiceApiRouter);
-app.use('/api/notification',notificationApiRouter);
-app.use('/api/order',orderApiRouter);
-app.use('/api/rates',ratesApiRouter);
-app.use('/api/register',registerApiRouter);
+app.use('/api/attributes', attributeApiRouter);
+app.use('/api/sales', saleApiRouter);
+app.use('/api/itemservice', itemServiceApiRouter);
+app.use('/api/notification', notificationApiRouter);
+app.use('/api/order', orderApiRouter);
+app.use('/api/rates', ratesApiRouter);
+app.use('/api/posts', postsApiRouter)
+app.use('/api/register', registerApiRouter);
+app.use('/api/image', imageApiRouter)
 
 const options = {
     definition: {
