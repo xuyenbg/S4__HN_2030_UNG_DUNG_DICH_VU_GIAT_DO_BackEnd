@@ -5,7 +5,7 @@ const multer = require('multer')
 // post ảnh
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public/uploads')
+        cb(null, 'public/img')
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname)
