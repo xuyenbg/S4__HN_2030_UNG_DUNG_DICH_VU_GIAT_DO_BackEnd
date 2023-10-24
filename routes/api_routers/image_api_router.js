@@ -19,7 +19,7 @@ router.use(upload.single('image'))
 router.post('/upload', (req, res) => {
     try {
         if (req.file != null) {
-            res.contentType('multipart/form-data').send(`/uploads/${req.file.filename}`)
+            res.contentType('multipart/form-data').send(`/img/${req.file.filename}`)
         } else {
             res.send("Không có file/ảnh nào được chọn")
             return
