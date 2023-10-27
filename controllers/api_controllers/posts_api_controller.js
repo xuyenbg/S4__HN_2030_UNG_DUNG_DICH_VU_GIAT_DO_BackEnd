@@ -23,7 +23,7 @@ exports.listPostByIdStore = async (req, res) => {
 
 exports.insertPost = async (req, res) => {
     try {
-        const { idStore, title, content, image } = req.body
+        const { idStore, title, content } = req.body
 
         if (idStore.length == 0) {
             res.status(400).send("Vui lòng nhập id của cửa hàng")
@@ -41,7 +41,8 @@ exports.insertPost = async (req, res) => {
         }
 
         const post = new PostModel({
-            idStore: idStore, title: title, content: content, image: image
+            idStore: idStore, title: title, content: content,
+            image: req.file == null || req.file == undefined ? null : `/img/${req.file.filename}`
         })
 
         await post.save()
