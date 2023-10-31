@@ -27,21 +27,64 @@ exports.getServiceByIdStore = async (req, res) => {
     }
 }
 
-exports.getServiceByIdStoreAndIdService = async(req,res) =>{
-    const idStore = req.params.idStore;
-    const idService = req.params.idService
-    try{
-        const checkService = await ServiceModel.find({_id:idService,idStore:idStore});
-            if(checkService.length === 0){
-                res.status(200).send("Dịch vụ không có trong cửa hàng");
-                return;
-            }
-            else{
-                const listServiceByIdStore = await ServiceModel.find({idStore:idStore});
-                const listService = listServiceByIdStore.filter((item)=>!item._id.equals(idService));
-                res.status(200).send(listService);
-            }
-    }catch(error){
+exports.getServiceByIdStoreAndIdService = async (req, res) => {
+    const idStore = req.query.idStore;
+    const idService = req.query.idService
+    try {
+        let listService = []
+        if (idService != null || idService != undefined) {
+            listService = await ServiceModel.find({ idStore: idStore });
+            const listCheckedService = listService.filter((item) => !item._id.equals(idService));
+            res.status(200).json(listCheckedService);
+        } else {
+            listService = await ServiceModel.find({ idStore: idStore }).populate('idCategory')
+                .populate('attributeList')
+                .populate('idSale')
+            res.status(200).json(listService);
+        }
+    } catch (error) {
+        console.log(error);
         res.status(500).send("Có lỗi xảy ra");
+    }
+}
+
+exports.getServiceByIdCategory = async (req, res) => {
+    try {
+        const idCategory = req.params.idCategory
+
+        const listService = await ServiceModel.find({ idCategory: idCategory }).populate('idCategory')
+            .populate('attributeList')
+            .populate('idSale')
+
+        await res.json(listService)
+    } catch (err) {
+        res.status(500).send("Có lỗi xảy ra")
+        console.log(err)
+    }
+}
+
+exports.insertService = async (req, res) => {
+    try {
+        const { name, attributeList, price, isActive, unit, idCategory, idSale, idStore } = req.body
+
+        const newService = new ServiceModel({
+            name: name,
+            attributeList: attributeList,
+            price: price,
+            image: req.file == null || req.file == undefined ? null : `/img/${req.file.filename}`,
+            isActive: isActive,
+            unit: unit,
+            idCategory: idCategory,
+            idSale: idSale ? idSale : null,
+            idStore: idStore
+        })
+
+        await newService.save().then((newService) => {
+            // newService là item vừa thêm, cần xem chi tiết thì log ra
+            res.send("Thêm dịch vụ thành công")
+        })
+    } catch (err) {
+        res.status(500).send("Có lỗi xảy ra")
+        console.log(err)
     }
 }

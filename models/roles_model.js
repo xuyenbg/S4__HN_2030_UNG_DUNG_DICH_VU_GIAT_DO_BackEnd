@@ -6,7 +6,7 @@ const RoleSchema = new db.Schema({
     required: true,
   },
 }, {
-    collection: 'Roles'
+  collection: 'Roles'
 });
 
 const RoleModel = db.model("RoleModel", RoleSchema);

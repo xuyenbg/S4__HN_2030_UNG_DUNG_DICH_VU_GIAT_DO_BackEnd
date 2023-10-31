@@ -56,37 +56,34 @@ const OrderSchema = new db.Schema(
             required: false,
             default: Date.now()
         },
-        listItem:[
+        listItem: [
             {
-                idService:{
-
-                   type: db.Schema.Types.ObjectId,
-                    ref:'ServiceModel'
-
+                idService: {
+                    type: db.Schema.Types.ObjectId,
+                    ref: 'ServiceModel'
                 },
-
-                number:{
-                    type:Number,
-                    required:false,
-                    default:0
+                number: {
+                    type: Number,
+                    required: false,
+                    default: 0
                 },
-                total:{
-                    type:Number,
-                    required:false,
-                    default:0
+                total: {
+                    type: Number,
+                    required: false,
+                    default: 0
                 },
                 attributeList: [
                     {
-                        type:db.Schema.Types.ObjectId,
-                        ref:'AttributeModel'
+                        type: db.Schema.Types.ObjectId,
+                        ref: 'AttributeModel'
                     }
                 ]
             }
         ]
 
     }, {
-        collection: "Order"
-    }
+    collection: "Order"
+}
 );
 const OrderMd = db.model('OrderModel', OrderSchema);
 

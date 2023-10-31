@@ -1,9 +1,23 @@
 var express = require('express')
 var router = express.Router()
 const ServiceApiController = require('../../controllers/api_controllers/services_api_controllers')
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/img')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+})
+
+const upload = multer({ storage })
 
 router.get('/list', ServiceApiController.getListService)
 router.get('/list-service-by-store/:idStore', ServiceApiController.getServiceByIdStore);
-router.get('/get-service-by-store-service/:idService/:idStore',ServiceApiController.getServiceByIdStoreAndIdService);
+router.get('/list-service-by-category/:idCategory', ServiceApiController.getServiceByIdCategory)
+router.get('/list-service-by-store-service', ServiceApiController.getServiceByIdStoreAndIdService);
+router.post('/insert', upload.single('image'), ServiceApiController.insertService)
 
 module.exports = router

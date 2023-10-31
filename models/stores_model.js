@@ -7,7 +7,8 @@ const StoreSchema = new db.Schema({
     },
     rate: {
         type: Number,
-        required: true
+        required: false,
+        default: 0
     },
     idUser: {
         type: db.Schema.Types.ObjectId,
