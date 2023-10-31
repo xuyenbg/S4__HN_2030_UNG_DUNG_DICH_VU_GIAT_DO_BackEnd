@@ -8,7 +8,7 @@ const CategorySchema = new db.Schema(
     },
     image: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   {
