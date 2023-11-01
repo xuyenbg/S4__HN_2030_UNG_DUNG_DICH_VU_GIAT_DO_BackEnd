@@ -23,7 +23,8 @@ exports.insertOrder = async (req, res) => {
             feeDelivery,
             status,
             idAddress,
-            isPaid
+            isPaid,
+            listItem
         } = req.body;
 
         if (idUser.length === 0) {
@@ -96,7 +97,8 @@ exports.insertOrder = async (req, res) => {
             feeDelivery: feeDelivery,
             status: status,
             idAddress: idAddress,
-            isPaid: isPaid
+            isPaid: isPaid,
+            listItem:listItem
         })
 
         await order.save();
