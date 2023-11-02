@@ -35,7 +35,22 @@ exports.getServiceByIdStore = async (req, res) => {
     const listServices = await ServiceModel.find({ idStore: idStore })
       .populate("idCategory")
       .populate("attributeList")
-      .populate("idSale");
+      .populate("idSale")
+      .populate("idStore")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      });
     res.json(listServices);
   } catch (err) {
     res.status(500).send("Có lỗi xảy ra");
@@ -58,7 +73,22 @@ exports.getServiceByIdStoreAndIdService = async (req, res) => {
       listService = await ServiceModel.find({ idStore: idStore })
         .populate("idCategory")
         .populate("attributeList")
-        .populate("idSale");
+        .populate("idSale")
+        .populate("idStore")
+        .populate({
+          path: "idStore",
+          populate: {
+            path: "idAddress",
+            model: "AddressModel",
+          },
+        })
+        .populate({
+          path: "idStore",
+          populate: {
+            path: "idUser",
+            model: "UserModel",
+          },
+        });
       res.status(200).json(listService);
     }
   } catch (error) {
@@ -74,7 +104,22 @@ exports.getServiceByIdCategory = async (req, res) => {
     const listService = await ServiceModel.find({ idCategory: idCategory })
       .populate("idCategory")
       .populate("attributeList")
-      .populate("idSale");
+      .populate("idSale")
+      .populate("idStore")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      });
 
     await res.json(listService);
   } catch (err) {
