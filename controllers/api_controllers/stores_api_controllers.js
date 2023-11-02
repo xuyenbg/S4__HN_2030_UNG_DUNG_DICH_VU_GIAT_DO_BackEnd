@@ -49,3 +49,24 @@ exports.registerStore = async (req, res) => {
         res.status(500).send("Có lỗi xảy ra")
     }
 }
+
+exports.getObjStoreById = async (req,res)=>{
+    const idUser = req.params.idUser;
+    try {
+        const objStore = await StoreModel.find({idUser:idUser}).populate("idAddress").populate("idUser");
+        res.status(200).json(objStore);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+}
+
+exports.searchStoreByName = async (req,res)=>{
+    const nameSearch = req.query.name;
+    try {
+        const listStore = await StoreModel.find();
+        const listSearch = listStore.filter(item=>item.name.toLowerCase().includes(nameSearch.toLowerCase()));
+        res.status(200).json(listSearch);
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}

@@ -198,3 +198,14 @@ exports.insertService = async (req, res) => {
         console.log(err);
     }
 };
+
+exports.searchServiceByName = async (req,res)=>{
+    const nameSearch = req.query.name;
+    try {
+        const listService = await ServiceModel.find();
+        const listSearch = listService.filter(item=>item.name.toLowerCase().includes(nameSearch.toLowerCase()));
+        res.status(200).json(listSearch);
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}

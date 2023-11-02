@@ -16,5 +16,7 @@ const upload = multer({ storage })
 
 router.get('/list', StoreApiController.getListStore)
 router.post('/register-store', upload.single('imageQRCode'), StoreApiController.registerStore)
+router.get('/store-by-iduse/:idUser',StoreApiController.getObjStoreById);
+router.get('/search-store',StoreApiController.searchStoreByName);
 
 module.exports = router

@@ -19,5 +19,6 @@ router.get('/list-service-by-store/:idStore', ServiceApiController.getServiceByI
 router.get('/list-service-by-category/:idCategory', ServiceApiController.getServiceByIdCategory)
 router.get('/list-service-by-store-service', ServiceApiController.getServiceByIdStoreAndIdService);
 router.post('/insert', upload.single('image'), ServiceApiController.insertService)
+router.get('/seach-service',ServiceApiController.searchServiceByName);
 
 module.exports = router
