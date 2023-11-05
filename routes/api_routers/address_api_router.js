@@ -6,5 +6,6 @@ router.get("/list", AddressApiController.getListAddress)
 router.put('/update-default-address/:idAddress', AddressApiController.updateAddressDefault)
 router.get('/detail-address/:idAddress', AddressApiController.getAddressById)
 router.get('/list-by-iduser/:idUser', AddressApiController.getListAddressByIdUser)
-
+router.post('/add-address',AddressApiController.addAddress);
+router.put('/update-address/:idAddress',AddressApiController.updateAddress);
 module.exports = router

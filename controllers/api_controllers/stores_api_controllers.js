@@ -70,3 +70,13 @@ exports.searchStoreByName = async (req,res)=>{
         res.status(500).json(error)
     }
 }
+
+exports.getStoreByidStore = async (req,res)=>{
+    const idStore = req.params.idStore;
+    try {
+        const listStore = await StoreModel.findOne({_id:idStore}).populate("idAddress").populate("idUser");
+        res.status(200).json(listStore);
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
