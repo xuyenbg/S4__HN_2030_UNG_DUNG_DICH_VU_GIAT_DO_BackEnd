@@ -18,5 +18,6 @@ router.get('/list', StoreApiController.getListStore)
 router.post('/register-store', upload.single('imageQRCode'), StoreApiController.registerStore)
 router.get('/store-by-iduse/:idUser',StoreApiController.getObjStoreById);
 router.get('/search-store',StoreApiController.searchStoreByName);
+router.get('/store-by-idstore/:idStore',StoreApiController.getStoreByidStore);
 
 module.exports = router
