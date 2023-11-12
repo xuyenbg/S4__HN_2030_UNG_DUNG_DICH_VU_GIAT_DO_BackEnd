@@ -1,46 +1,51 @@
-const db = require('../configs/db_config')
+const db = require("../configs/db_config");
 
-const UserSchema = new db.Schema({
+const UserSchema = new db.Schema(
+  {
     phone: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     passwd: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     fullname: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     idRole: {
-        type: db.Schema.Types.ObjectId,
-        required: true,
-        ref: "RoleModel"
+      type: db.Schema.Types.ObjectId,
+      required: true,
+      ref: "RoleModel",
     },
     favoriteStores: [
-        {
-            type: db.Schema.ObjectId,
-            required: false,
-            ref: "StoreModel"
-        }
+      {
+        type: db.Schema.ObjectId,
+        required: false,
+        ref: "StoreModel",
+      },
     ],
-    avatar:{
-      type:db.Schema.Types.String
+    avatar: {
+      type: String,
+      required: false,
+      default: null,
     },
     createAt: {
-        type: Date,
-        required: false,
-        default: Date.now()
+      type: Date,
+      required: false,
+      default: Date.now(),
     },
     updateAt: {
-        type: Date,
-        required: false,
-        default: Date.now()
-    }
-}, {
-    collection: "Users"
-})
+      type: Date,
+      required: false,
+      default: Date.now(),
+    },
+  },
+  {
+    collection: "Users",
+  }
+);
 
 const UserModel = db.model("UserModel", UserSchema);
 

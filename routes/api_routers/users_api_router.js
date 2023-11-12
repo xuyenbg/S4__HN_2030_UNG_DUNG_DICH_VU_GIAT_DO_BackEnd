@@ -1,7 +1,24 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const UserApiControllers = require('../../controllers/api_controllers/users_api_controllers')
+const multer = require("multer");
+const UserApiControllers = require("../../controllers/api_controllers/users_api_controllers");
 
-router.get('/list', UserApiControllers.getListUser)
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/img");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
 
-module.exports = router
+const upload = multer({ storage });
+
+router.get("/list", UserApiControllers.getListUser);
+router.put(
+  "/update/:idUser",
+  upload.single("avatar"),
+  UserApiControllers.updateUser
+);
+
+module.exports = router;
