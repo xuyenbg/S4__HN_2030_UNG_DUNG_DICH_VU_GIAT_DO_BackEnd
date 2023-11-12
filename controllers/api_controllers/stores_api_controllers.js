@@ -53,7 +53,7 @@ exports.registerStore = async (req, res) => {
 exports.getObjStoreById = async (req,res)=>{
     const idUser = req.params.idUser;
     try {
-        const objStore = await StoreModel.find({idUser:idUser}).populate("idAddress").populate("idUser");
+        const objStore = await StoreModel.findOne({idUser:idUser}).populate("idAddress").populate("idUser");
         res.status(200).json(objStore);
     } catch (error) {
         res.status(500).json(error.message);
