@@ -39,4 +39,6 @@ router.put(
   ServiceApiController.updateService
 );
 
+router.get('/servicebyid/:idService',ServiceApiController.getServiecById);
+
 module.exports = router;
