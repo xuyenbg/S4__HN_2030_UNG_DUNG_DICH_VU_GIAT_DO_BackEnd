@@ -6,6 +6,7 @@ var logger = require("morgan");
 var bodyParser = require("body-parser");
 const swaggerjsdoc = require('swagger-jsdoc')
 const swaggerui = require('swagger-ui-express')
+const session = require('express-session');
 require("./configs/db_config");
 
 // Web Server
@@ -47,6 +48,13 @@ var app = express();
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(session({
+    secret:'nhom4444i3432j492j35nfdshfúydfy2h3nksjdfh9',
+    resave:true,
+    saveUninitialized:true
+   }));
+
+
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -88,6 +96,9 @@ app.use('/api/rates', ratesApiRouter);
 app.use('/api/posts', postsApiRouter)
 app.use('/api/register', registerApiRouter);
 app.use('/api/image', imageApiRouter)
+
+
+   
 
 const options = {
     definition: {
