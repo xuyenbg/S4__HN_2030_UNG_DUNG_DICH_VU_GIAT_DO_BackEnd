@@ -1,9 +1,14 @@
 var express = require('express');
 var router = express.Router();
+const checkLogin = require('../middleware/checkLogin')
+const AuthController = require('../controllers/auth_controller')
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/',checkLogin.reqLogin, function(req, res, next) {
   res.render('home', { title: 'Express' });
 });
+
+  router.get('/logout',checkLogin.reqLogin,AuthController.logoutAdmin)
+
 
 module.exports = router;
