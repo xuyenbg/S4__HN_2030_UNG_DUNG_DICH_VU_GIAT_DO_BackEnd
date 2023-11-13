@@ -106,7 +106,6 @@ exports.getStoreByidStore = async (req, res) => {
   }
 };
 
-// đoạn code này đang lỗi
 exports.updateStore = async (req, res) => {
   try {
     const idStore = req.params.idStore;
@@ -125,33 +124,22 @@ exports.updateStore = async (req, res) => {
     const store = await StoreModel.findOne({ _id: idStore });
     const checkAddress = await AddressModel.findOne({ _id: store.idAddress });
 
-    const newAddress = new AddressModel({
-      longitude:
-        longitude != checkAddress.longitude
-          ? longitude
-          : checkAddress.longitude,
-      latitude:
-        latitude != checkAddress.latitude ? latitude : checkAddress.latitude,
-      isDefault:
-        isDefault != null || isDefault != undefined
-          ? isDefault
-          : checkAddress.isDefault,
-      idUser:
-        idUser != null || idUser != undefined ? idUser : checkAddress.idUser,
-      address: address != checkAddress.address ? address : checkAddress.address,
-    });
+    if(longitude != checkAddress.longitude || latitude != checkAddress.latitude){
+      const newAddress = new AddressModel({
+        longitude: longitude,
+        latitude: latitude,
+        isDefault: isDefault,
+        address: address,
+        idUser: idUser
+      })
 
-    await newAddress.save().then(async (newAddress) => {
-      await StoreModel.findByIdAndUpdate(
-        { _id: idStore },
-        {
+      await newAddress.save().then(async (newAddress) => {
+        await StoreModel.findByIdAndUpdate({_id: idStore}, {
           name: name != null || name != undefined ? name : store.name,
           rate: rate != null || rate != undefined ? rate : store.rate,
           idUser: idUser != null || idUser != undefined ? idUser : store.idUser,
           idAddress:
-            idAddress != null || idAddress != undefined
-              ? idAddress
-              : store.idAddress,
+            newAddress._id,
           status: status != null || status != undefined ? status : store.status,
           transportTypeList:
             transportTypeList != null || transportTypeList != undefined
@@ -161,10 +149,30 @@ exports.updateStore = async (req, res) => {
             req.file != null || req.file != undefined
               ? `/img/${req.file.filename}`
               : store.imageQRCode,
-        }
-      );
-    });
-  } catch (err) {}
+        }).then((_) => {res.send("Cập nhật cửa hàng thành công")})
+      })
+    } else {
+      await StoreModel.findByIdAndUpdate({_id: idStore}, {
+        name: name != null || name != undefined ? name : store.name,
+        rate: rate != null || rate != undefined ? rate : store.rate,
+        idUser: idUser != null || idUser != undefined ? idUser : store.idUser,
+        idAddress:
+          store.idAddress,
+        status: status != null || status != undefined ? status : store.status,
+        transportTypeList:
+          transportTypeList != null || transportTypeList != undefined
+            ? transportTypeList
+            : store.transportTypeList,
+        imageQRCode:
+          req.file != null || req.file != undefined
+            ? `/img/${req.file.filename}`
+            : store.imageQRCode,
+      }).then((_) => {res.send("Cập nhật cửa hàng thành công")})
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Có lỗi xảy ra");
+  }
 };
 
 exports.updateRateStore = async (req, res) => {

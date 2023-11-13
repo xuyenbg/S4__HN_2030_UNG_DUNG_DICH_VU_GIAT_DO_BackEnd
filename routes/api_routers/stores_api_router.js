@@ -24,5 +24,6 @@ router.get("/store-by-iduse/:idUser", StoreApiController.getObjStoreById);
 router.get("/search-store", StoreApiController.searchStoreByName);
 router.get("/store-by-idstore/:idStore", StoreApiController.getStoreByidStore);
 router.put("/update-rate/:idStore", StoreApiController.updateRateStore);
+router.put('/update-store/:idStore', upload.single('imageQRCode'), StoreApiController.updateStore)
 
 module.exports = router;
