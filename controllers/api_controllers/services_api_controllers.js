@@ -353,3 +353,31 @@ exports.updateService = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.getServiecById = async (req,res)=>{
+    const idService = req.params.idService;
+    try {
+        const objService = await ServiceModel.findOne({_id:idService}).populate("idCategory")
+        .populate("attributeList")
+        .populate("idSale")
+        .populate("idStore")
+        .populate({
+          path: "idStore",
+          populate: {
+            path: "idAddress",
+            model: "AddressModel",
+          },
+        })
+        .populate({
+          path: "idStore",
+          populate: {
+            path: "idUser",
+            model: "UserModel",
+          },
+        });
+  
+        res.status(200).json(objService)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
