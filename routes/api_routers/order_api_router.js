@@ -8,7 +8,8 @@ const { getListOrderModel,
     insertOrder, 
     updateStatusOrder, 
     updateOrder, 
-    getOrderDetail }
+    getOrderDetail, 
+    getListOrderTodayByIdStore}
     = require("../../controllers/api_controllers/order_api_controllers");
 var router = express.Router();
 
@@ -22,6 +23,6 @@ router.get('/get-list-order-by-idStore-idUser/:idStore/:idUser', getListOrderByI
 router.get('/get-list-order-by-idStore/:idStore', getListOrderByIdStore);
 router.get('/get-list-order-by-status-store-user/:idStore/:idUser/:status', getListOrderByStatusAndStoreAndUser)
 router.get('/get-list-order-by-status-user/:idUser/:status', getListOrderByStatusAndUser);
-
+router.get('/list-order-today-by-idstore-status/:idStore', getListOrderTodayByIdStore)
 
 module.exports = router;
