@@ -378,19 +378,18 @@ exports.getListOrderTodayByIdStore = async (req, res) => {
     const sortOption = sortOrder == "desc" ? "desc" : "asc";
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0)
+    today.setHours(0, 0, 0, 0);
 
     const listOrder = await OrderModel.find({
       idStore: idStore,
       status: status,
-      createAt: { $gte: today, $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000)},
+      createAt: {
+        $gte: today,
+        $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+      },
     }).sort({ createAt: sortOption });
 
-    if(listOrder.length == 0){
-        res.send("Không có dữ liệu")
-    } else {
-        res.json(listOrder);
-    }
+    res.json(listOrder);
   } catch (err) {
     res.status(500).send("Có lỗi xảy ra");
     console.log(err);
