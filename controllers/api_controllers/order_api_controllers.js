@@ -8,7 +8,21 @@ exports.getListOrderModel = async (req, res) => {
       .populate("idAddress")
       .populate("listItem.idService")
       .populate("listItem.idService.attributeList._id")
-      .populate("listItem.attributeList");
+      .populate("listItem.attributeList")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      });
 
     res.status(200).json(listOrder);
   } catch (err) {
@@ -259,7 +273,21 @@ exports.getOrderDetail = async (req, res) => {
       .populate("idAddress")
       .populate("listItem.idService")
       .populate("listItem.idService.attributeList._id")
-      .populate("listItem.attributeList");
+      .populate("listItem.attributeList")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      });
 
     res.status(200).json(listOrder);
   } catch (error) {
@@ -281,7 +309,21 @@ exports.getListOrderByIdUser = async (req, res) => {
       .populate("idAddress")
       .populate("listItem.idService")
       .populate("listItem.idService.attributeList._id")
-      .populate("listItem.attributeList");
+      .populate("listItem.attributeList")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      });
 
     res.status(200).json(listOrder);
   } catch (error) {
@@ -308,7 +350,21 @@ exports.getListOrderByIdStoreAndIdUser = async (req, res) => {
       .populate("idAddress")
       .populate("listItem.idService")
       .populate("listItem.idService.attributeList._id")
-      .populate("listItem.attributeList");
+      .populate("listItem.attributeList")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      });
 
     res.status(200).json(listOrder);
   } catch (error) {
@@ -331,7 +387,21 @@ exports.getListOrderByIdStore = async (req, res) => {
       .populate("idAddress")
       .populate("listItem.idService")
       .populate("listItem.idService.attributeList._id")
-      .populate("listItem.attributeList");
+      .populate("listItem.attributeList")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      });
 
     res.status(200).json(listOrder);
   } catch (error) {
@@ -359,7 +429,21 @@ exports.getListOrderByStatusAndStoreAndUser = async (req, res) => {
       .populate("idAddress")
       .populate("listItem.idService")
       .populate("listItem.idService.attributeList._id")
-      .populate("listItem.attributeList");
+      .populate("listItem.attributeList")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      });
 
     res.status(200).json(listOrder);
   } catch (error) {
@@ -385,7 +469,21 @@ exports.getListOrderByStatusAndUser = async (req, res) => {
       .populate("idAddress")
       .populate("listItem.idService")
       .populate("listItem.idService.attributeList._id")
-      .populate("listItem.attributeList");
+      .populate("listItem.attributeList")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      });
 
     res.status(200).json(listOrder);
   } catch (error) {
@@ -418,7 +516,21 @@ exports.getListOrderTodayByIdStore = async (req, res) => {
       .populate("idAddress")
       .populate("listItem.idService")
       .populate("listItem.idService.attributeList._id")
-      .populate("listItem.attributeList");
+      .populate("listItem.attributeList")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      });
 
     res.json(listOrder);
   } catch (err) {
