@@ -98,6 +98,7 @@ exports.getServiceByIdStoreAndIdService = async (req, res) => {
   }
 };
 
+// sua api nay
 exports.getServiceByIdCategory = async (req, res) => {
   try {
     const idCategory = req.params.idCategory;
@@ -122,7 +123,19 @@ exports.getServiceByIdCategory = async (req, res) => {
         },
       });
 
-    await res.json(listService);
+    const uniqueServices = [];
+    listService.forEach((service) => {
+      const exist = uniqueServices.some(
+        (uniqueService) =>
+          uniqueService.name.toLowerCase() === service.name.toLowerCase()
+      );
+
+      if(!exist){
+        uniqueServices.push(service)
+      }
+    });
+
+    res.json(uniqueServices);
   } catch (err) {
     res.status(500).send("Có lỗi xảy ra");
     console.log(err);
