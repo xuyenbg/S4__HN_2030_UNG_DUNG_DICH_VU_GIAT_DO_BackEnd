@@ -218,7 +218,24 @@ exports.insertService = async (req, res) => {
 exports.searchServiceByName = async (req, res) => {
   const nameSearch = req.query.name;
   try {
-    const listService = await ServiceModel.find();
+    const listService = await ServiceModel.find().populate("idCategory")
+    .populate("attributeList")
+    .populate("idSale")
+    .populate("idStore")
+    .populate({
+      path: "idStore",
+      populate: {
+        path: "idAddress",
+        model: "AddressModel",
+      },
+    })
+    .populate({
+      path: "idStore",
+      populate: {
+        path: "idUser",
+        model: "UserModel",
+      },
+    });;
     const listSearch = listService.filter((item) =>
       item.name.toLowerCase().includes(nameSearch.toLowerCase())
     );
