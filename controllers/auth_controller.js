@@ -17,7 +17,7 @@ exports.loginAdmin = async (req, res) => {
       if (objU !== null) {
         const objRole = await RoleModel.findOne({ _id: objU.idRole });
         console.log(objRole.name);
-        if (objRole.name === "Admin") {
+        if (objRole.id === "6552dad6ca05d848a1d10b4c") {
           if (objU.passwd !== req.body.passwd) {
             msg = "Mật khẩu không đúng";
           } else {
