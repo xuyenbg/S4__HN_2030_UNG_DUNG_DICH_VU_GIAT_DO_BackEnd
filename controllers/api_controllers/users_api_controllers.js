@@ -195,3 +195,18 @@ exports.removeFavouriteStore = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.getDetailsUser = async (req, res) => {
+  try {
+    const idUser = req.params.idUser;
+
+    const user = await UserModel.findOne({ _id: idUser }).populate(
+      "favoriteStores"
+    ).populate("idRole");
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).send("Có lỗi xảy ra");
+    console.log(err);
+  }
+};
