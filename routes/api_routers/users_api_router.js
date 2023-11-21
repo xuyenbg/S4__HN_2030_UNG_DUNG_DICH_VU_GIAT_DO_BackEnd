@@ -21,4 +21,10 @@ router.put(
   UserApiControllers.updateUser
 );
 
+router.put("/add-fav-store/:idUser", UserApiControllers.addFavouriteStore);
+router.put(
+  "/remove-fav-store/:idUser",
+  UserApiControllers.removeFavouriteStore
+);
+
 module.exports = router;

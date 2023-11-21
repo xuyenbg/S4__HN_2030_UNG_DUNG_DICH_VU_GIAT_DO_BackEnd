@@ -157,3 +157,41 @@ exports.updateUser = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.addFavouriteStore = async (req, res) => {
+  try {
+    const idUser = req.params.idUser;
+    const favoriteStores = req.body.favoriteStores;
+
+    await UserModel.findOneAndUpdate(
+      { _id: idUser, favoriteStores: { $nin: favoriteStores } },
+      { $push: { favoriteStores: { $each: favoriteStores } } },
+      { new: true }
+    ).then((newUser) => {
+      res.send("Thêm cửa hàng yêu thích thành công");
+      // cần xem thông tin của user mới thì log newUser
+      // console.log(newUser);
+    });
+  } catch (err) {
+    res.status(500).send("Có lỗi xảy ra");
+    console.log(err);
+  }
+};
+
+exports.removeFavouriteStore = async (req, res) => {
+  try {
+    const idUser = req.params.idUser;
+    const favoriteStores = req.body.favoriteStores;
+
+    await UserModel.findByIdAndUpdate(
+      { _id: idUser },
+      { $pull: { favoriteStores: { $in: favoriteStores } } },
+      { new: true }
+    ).then((updateUser) => {
+      res.send("Xoá cửa hàng yêu thích thành công");
+    });
+  } catch (err) {
+    res.status(500).send("Có lỗi xảy ra");
+    console.log(err);
+  }
+};
