@@ -26,5 +26,6 @@ router.put(
   "/remove-fav-store/:idUser",
   UserApiControllers.removeFavouriteStore
 );
+router.get("/details/:idUser", UserApiControllers.getDetailsUser);
 
 module.exports = router;

@@ -72,6 +72,10 @@ const OrderSchema = new db.Schema(
                     required: false,
                     default: 0
                 },
+                image: {
+                    type: String,
+                    required: false
+                },
                 attributeList: [
                     {
                         type: db.Schema.Types.ObjectId,
