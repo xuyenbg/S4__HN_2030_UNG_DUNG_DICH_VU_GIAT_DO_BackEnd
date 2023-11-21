@@ -175,6 +175,7 @@ exports.updateOrder = async (req, res) => {
       status,
       idAddress,
       isPaid,
+      listItem
     } = req.body;
 
     if (idUser.length === 0) {
@@ -254,6 +255,7 @@ exports.updateOrder = async (req, res) => {
         status: status,
         idAddress: idAddress,
         isPaid: isPaid,
+        listItem: listItem
       }
     );
 
