@@ -8,4 +8,5 @@ router.get('/detail-address/:idAddress', AddressApiController.getAddressById)
 router.get('/list-by-iduser/:idUser', AddressApiController.getListAddressByIdUser)
 router.post('/add-address',AddressApiController.addAddress);
 router.put('/update-address/:idAddress',AddressApiController.updateAddress);
+router.get('/getListStoreNearest/:idUser',AddressApiController.getListStoreNearest);
 module.exports = router
