@@ -227,7 +227,9 @@ exports.openCloseStore = async (req, res) => {
       {
         status: status,
       }
-    );
+    ).then((_) => {
+      res.send("Cập nhật trạng thái cửa hàng thành công");
+    });
   } catch (err) {
     res.status(500).send("Có lỗi xảy ra");
     console.log(err);
