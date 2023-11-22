@@ -102,7 +102,8 @@ exports.getStoreByidStore = async (req, res) => {
       .populate("idUser");
     res.status(200).json(listStore);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).send("Có lỗi xảy ra");
+    console.log(error);
   }
 };
 
@@ -124,22 +125,50 @@ exports.updateStore = async (req, res) => {
     const store = await StoreModel.findOne({ _id: idStore });
     const checkAddress = await AddressModel.findOne({ _id: store.idAddress });
 
-    if(longitude != checkAddress.longitude || latitude != checkAddress.latitude){
+    if (
+      longitude != checkAddress.longitude ||
+      latitude != checkAddress.latitude
+    ) {
       const newAddress = new AddressModel({
         longitude: longitude,
         latitude: latitude,
         isDefault: isDefault,
         address: address,
-        idUser: idUser
-      })
+        idUser: idUser,
+      });
 
       await newAddress.save().then(async (newAddress) => {
-        await StoreModel.findByIdAndUpdate({_id: idStore}, {
+        await StoreModel.findByIdAndUpdate(
+          { _id: idStore },
+          {
+            name: name != null || name != undefined ? name : store.name,
+            rate: rate != null || rate != undefined ? rate : store.rate,
+            idUser:
+              idUser != null || idUser != undefined ? idUser : store.idUser,
+            idAddress: newAddress._id,
+            status:
+              status != null || status != undefined ? status : store.status,
+            transportTypeList:
+              transportTypeList != null || transportTypeList != undefined
+                ? transportTypeList
+                : store.transportTypeList,
+            imageQRCode:
+              req.file != null || req.file != undefined
+                ? `/img/${req.file.filename}`
+                : store.imageQRCode,
+          }
+        ).then((_) => {
+          res.send("Cập nhật cửa hàng thành công");
+        });
+      });
+    } else {
+      await StoreModel.findByIdAndUpdate(
+        { _id: idStore },
+        {
           name: name != null || name != undefined ? name : store.name,
           rate: rate != null || rate != undefined ? rate : store.rate,
           idUser: idUser != null || idUser != undefined ? idUser : store.idUser,
-          idAddress:
-            newAddress._id,
+          idAddress: store.idAddress,
           status: status != null || status != undefined ? status : store.status,
           transportTypeList:
             transportTypeList != null || transportTypeList != undefined
@@ -149,25 +178,10 @@ exports.updateStore = async (req, res) => {
             req.file != null || req.file != undefined
               ? `/img/${req.file.filename}`
               : store.imageQRCode,
-        }).then((_) => {res.send("Cập nhật cửa hàng thành công")})
-      })
-    } else {
-      await StoreModel.findByIdAndUpdate({_id: idStore}, {
-        name: name != null || name != undefined ? name : store.name,
-        rate: rate != null || rate != undefined ? rate : store.rate,
-        idUser: idUser != null || idUser != undefined ? idUser : store.idUser,
-        idAddress:
-          store.idAddress,
-        status: status != null || status != undefined ? status : store.status,
-        transportTypeList:
-          transportTypeList != null || transportTypeList != undefined
-            ? transportTypeList
-            : store.transportTypeList,
-        imageQRCode:
-          req.file != null || req.file != undefined
-            ? `/img/${req.file.filename}`
-            : store.imageQRCode,
-      }).then((_) => {res.send("Cập nhật cửa hàng thành công")})
+        }
+      ).then((_) => {
+        res.send("Cập nhật cửa hàng thành công");
+      });
     }
   } catch (err) {
     console.log(err);
@@ -193,5 +207,29 @@ exports.updateRateStore = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send("Có lỗi xảy ra");
+  }
+};
+
+exports.getNearStore = async (req, res) => {
+  try {
+  } catch (err) {
+    res.status(500).send("Có lỗi xảy ra");
+    console.log(err);
+  }
+};
+
+exports.openCloseStore = async (req, res) => {
+  try {
+    const idStore = req.params.idStore;
+    const status = req.body.status;
+    await StoreModel.findByIdAndUpdate(
+      { _id: idStore },
+      {
+        status: status,
+      }
+    );
+  } catch (err) {
+    res.status(500).send("Có lỗi xảy ra");
+    console.log(err);
   }
 };

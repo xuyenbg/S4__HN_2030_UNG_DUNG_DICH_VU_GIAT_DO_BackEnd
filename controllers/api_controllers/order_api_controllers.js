@@ -121,6 +121,8 @@ exports.insertOrder = async (req, res) => {
       idAddress: idAddress,
       isPaid: isPaid,
       listItem: listItem,
+      createAt: Date.now(),
+      updateAt: Date.now(),
     });
 
     await order.save();
@@ -151,6 +153,7 @@ exports.updateStatusOrder = async (req, res) => {
       { _id: idOrder },
       {
         status: status,
+        updateAt: Date.now(),
       }
     );
 
@@ -175,7 +178,7 @@ exports.updateOrder = async (req, res) => {
       status,
       idAddress,
       isPaid,
-      listItem
+      listItem,
     } = req.body;
 
     if (idUser.length === 0) {
@@ -255,7 +258,8 @@ exports.updateOrder = async (req, res) => {
         status: status,
         idAddress: idAddress,
         isPaid: isPaid,
-        listItem: listItem
+        listItem: listItem,
+        updateAt: Date.now(),
       }
     );
 
