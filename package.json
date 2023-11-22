@@ -12,6 +12,7 @@
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "express-session": "^1.17.3",
+    "geolib": "^3.3.4",
     "http-errors": "~1.6.3",
     "moment": "^2.29.4",
     "mongoose": "7.6.0",
