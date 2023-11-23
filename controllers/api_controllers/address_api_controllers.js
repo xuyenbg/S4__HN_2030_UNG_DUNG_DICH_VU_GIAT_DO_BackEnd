@@ -107,35 +107,25 @@ exports.getListAddressByIdUser = async (req, res) => {
   }
 };
 
-const stores = [
-  { id: 1, name: "Cửa hàng A", latitude: 10.1234, longitude: 106.5678 },
-  { id: 2, name: "Cửa hàng B", latitude: 10.4321, longitude: 106.8765 },
-  { id: 3, name: "Cửa hàng Bc", latitude: 10, longitude: 106 },
-];
-
 exports.getListStoreNearest = async (req, res) => {
-  const idUser = req.params.idUser;
-  const objAddresByIdUser = await AddressModel.findOne({
-    idUser: idUser,
-    isDefault: true,
-  });
   const userLocation = {
-    latitude: objAddresByIdUser.latitude,
-    longitude: objAddresByIdUser.longitude,
+    latitude: req.params.latitude,
+    longitude: req.params.longitude,
   };
 
   const listStore = await StoreModel.find().populate("idAddress");
   const distances = listStore.map((store) => ({
     storeId: store.id.toString(),
     storeName: store.name,
-    distance: parseFloat(geolib.getDistance(userLocation, {
-      latitude: store.idAddress.latitude || 0,
-      longitude: store.idAddress.longitude || 0,
-    })),
+    distance: parseFloat(
+      geolib.getDistance(userLocation, {
+        latitude: store.idAddress.latitude || 0,
+        longitude: store.idAddress.longitude || 0,
+      })
+    ),
     distanceUnit: "meters",
   }));
   distances.sort((a, b) => a.distance - b.distance);
-
 
   res.status(200).json(distances);
 };
