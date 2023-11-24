@@ -4,10 +4,37 @@ const OrderModel = require("../../models/order_model");
 
 exports.getListRates = async (req, res) => {
   try {
-    const list = await RateModel.find().populate("idUser");
+    const list = await RateModel.find()
+      .populate("idUser")
+      .populate({
+        path: "idUser",
+        populate: { path: "idRole", model: "RoleModel" },
+      })
+      .populate({
+        path: "idUser",
+        populate: { path: "favoriteStores", model: "StoreModel" },
+      });
+    // .populate("idStore")
+    // .populate({
+    //   path: "idStore",
+    //   populate: { path: "idAddress", model: "AddressModel" },
+    // })
+    // .populate({
+    //   path: "idStore",
+    //   populate: { path: "idUser", model: "UserModel" },
+    // })
+    // .populate({
+    //   path: "idUser",
+    //   populate: { path: "idRole", model: "RoleModel" },
+    // })
+    // .populate({
+    //   path: "idUser",
+    //   populate: { path: "favoriteStores", model: "StoreModel" },
+    // });
     res.status(200).json(list);
   } catch (error) {
     res.status(500).send("Có lỗi xảy ra");
+    console.log(error);
   }
 };
 
@@ -47,6 +74,7 @@ exports.addRate = async (req, res) => {
     await objRate.save();
   } catch (error) {
     res.status(500).send("Có lỗi xảy ra");
+    console.log(error);
   }
 
   const listRateByStore = await RateModel.find({ idStore: idStore });
@@ -68,6 +96,51 @@ exports.addRate = async (req, res) => {
     );
   } catch (error) {
     res.status(500).send("Có lỗi xảy ra");
+    console.log(error);
   }
   res.status(200).json("Đánh giá thành công");
+};
+
+exports.getRateByIdStore = async (req, res) => {
+  try {
+    const idStore = req.params.idStore;
+    const listRate = await RateModel.find({ idStore: idStore })
+      .populate("idUser")
+      .populate({
+        path: "idUser",
+        populate: { path: "idRole", model: "RoleModel" },
+      })
+      .populate({
+        path: "idUser",
+        populate: { path: "favoriteStores", model: "StoreModel" },
+      });
+
+    // để đây phòng trường hợp phải populate
+    // .populate("idStore")
+    // .populate({
+    //   path: "idStore",
+    //   populate: { path: "idAddress", model: "AddressModel" },
+    // })
+    // .populate({
+    //   path: "idStore",
+    //   populate: { path: "idUser", model: "UserModel" },
+    // })
+    // .populate({
+    //   path: "idUser",
+    //   populate: { path: "idRole", model: "RoleModel" },
+    // })
+    // .populate({
+    //   path: "idUser",
+    //   populate: { path: "favoriteStores", model: "StoreModel" },
+    // })
+    // .populate("idOrder")
+    // .populate({
+    //   path: "idOrder",
+    //   populate: { path: "idUser", model: "UserModel" },
+    // });
+    res.json(listRate);
+  } catch (err) {
+    res.status(500).send("Có lỗi xảy ra");
+    console.log(err);
+  }
 };

@@ -122,12 +122,17 @@ exports.updateStore = async (req, res) => {
       isDefault,
     } = req.body;
 
+    console.log(req.body);
+
     const store = await StoreModel.findOne({ _id: idStore });
     const checkAddress = await AddressModel.findOne({ _id: store.idAddress });
 
     if (
-      longitude != checkAddress.longitude ||
-      latitude != checkAddress.latitude
+      (longitude != null ||
+        longitude != undefined ||
+        latitude != null ||
+        latitude != undefined) &&
+      (longitude != checkAddress.longitude || latitude != checkAddress.latitude)
     ) {
       const newAddress = new AddressModel({
         longitude: longitude,
