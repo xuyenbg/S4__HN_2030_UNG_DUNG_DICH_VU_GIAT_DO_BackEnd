@@ -17,7 +17,7 @@ const upload = multer({ storage });
 router.get("/list", StoreApiController.getListStore);
 router.post(
   "/register-store",
-  upload.single("imageQRCode"),
+  upload.single("image"),
   StoreApiController.registerStore
 );
 router.get("/store-by-iduse/:idUser", StoreApiController.getObjStoreById);
@@ -26,7 +26,7 @@ router.get("/store-by-idstore/:idStore", StoreApiController.getStoreByidStore);
 router.put("/update-rate/:idStore", StoreApiController.updateRateStore);
 router.put(
   "/update-store/:idStore",
-  upload.single("imageQRCode"),
+  upload.single("image"),
   StoreApiController.updateStore
 );
 router.get("/list-near-store", StoreApiController.getNearStore);

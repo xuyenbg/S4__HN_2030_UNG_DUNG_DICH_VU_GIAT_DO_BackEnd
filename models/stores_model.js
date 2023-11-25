@@ -30,7 +30,7 @@ const StoreSchema = new db.Schema({
             required: true
         }
     ],
-    imageQRCode: {
+    image: {
         type: String,
         required: false
     }

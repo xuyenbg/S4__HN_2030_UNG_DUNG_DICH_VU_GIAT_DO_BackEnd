@@ -37,6 +37,8 @@ exports.registerStore = async (req, res) => {
       address: address,
     });
 
+    const user = await UserModel.findOne({ _id: idUser });
+
     await newAddress.save().then(async (newAddress) => {
       // sau khi them dia chi thi se them id address vao cua hang
       const newStore = new StoreModel({
@@ -46,9 +48,9 @@ exports.registerStore = async (req, res) => {
         idAddress: newAddress._id,
         status: status,
         transportTypeList: transportTypeList,
-        imageQRCode:
+        image:
           req.file == null || req.file == undefined
-            ? null
+            ? user.avatar
             : `/img/${req.file.filename}`,
       });
 
@@ -122,8 +124,6 @@ exports.updateStore = async (req, res) => {
       isDefault,
     } = req.body;
 
-    console.log(req.body);
-
     const store = await StoreModel.findOne({ _id: idStore });
     const checkAddress = await AddressModel.findOne({ _id: store.idAddress });
 
@@ -157,10 +157,10 @@ exports.updateStore = async (req, res) => {
               transportTypeList != null || transportTypeList != undefined
                 ? transportTypeList
                 : store.transportTypeList,
-            imageQRCode:
+            image:
               req.file != null || req.file != undefined
                 ? `/img/${req.file.filename}`
-                : store.imageQRCode,
+                : store.image,
           }
         ).then((_) => {
           res.send("Cập nhật cửa hàng thành công");
@@ -179,10 +179,10 @@ exports.updateStore = async (req, res) => {
             transportTypeList != null || transportTypeList != undefined
               ? transportTypeList
               : store.transportTypeList,
-          imageQRCode:
+          image:
             req.file != null || req.file != undefined
               ? `/img/${req.file.filename}`
-              : store.imageQRCode,
+              : store.image,
         }
       ).then((_) => {
         res.send("Cập nhật cửa hàng thành công");
