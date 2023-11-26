@@ -122,13 +122,14 @@ exports.updateUser = async (req, res) => {
     const { phone, passwd, fullname } = req.body;
 
     const user = await UserModel.findOne({ _id: idUser });
-    // const checkExistPhone = await UserModel.findOne({ phone: phone });
+    if (phone != null && phone != undefined) {
+      const checkExistPhone = await UserModel.findOne({ phone: phone });
 
-    // console.log(checkExistPhone);
-    // if (checkExistPhone == null) {
-    //   res.status(401).send("Số điện thoại đã tồn tại");
-    //   return;
-    // }
+      if (checkExistPhone != null) {
+        res.status(401).send("Số điện thoại đã tồn tại");
+        return;
+      }
+    }
 
     await UserModel.findByIdAndUpdate(
       { _id: idUser },
@@ -146,7 +147,7 @@ exports.updateUser = async (req, res) => {
         updateAt: Date.now(),
       }
     )
-      .then(async(_) => {
+      .then(async (_) => {
         const newUser = await UserModel.findOne({ _id: idUser });
         res.json({
           message: "Cập nhật thông tin người dùng thành công",
@@ -157,7 +158,6 @@ exports.updateUser = async (req, res) => {
         res.status(500).send("Cập nhật thông tin người dùng thất bại");
         console.log(err);
       });
-
   } catch (err) {
     res.status(500).send("Cập nhật thông tin người dùng thất bại");
     console.log(err);
