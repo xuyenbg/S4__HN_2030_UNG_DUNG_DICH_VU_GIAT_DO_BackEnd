@@ -162,8 +162,12 @@ exports.updateStore = async (req, res) => {
                 ? `/img/${req.file.filename}`
                 : store.image,
           }
-        ).then((_) => {
-          res.send("Cập nhật cửa hàng thành công");
+        ).then(async (_) => {
+          const newStore = await StoreModel.findOne({ _id: idStore });
+          res.json({
+            message: "Cập nhật cửa hàng thành công",
+            store: newStore
+          });
         });
       });
     } else {
@@ -184,8 +188,12 @@ exports.updateStore = async (req, res) => {
               ? `/img/${req.file.filename}`
               : store.image,
         }
-      ).then((_) => {
-        res.send("Cập nhật cửa hàng thành công");
+      ).then(async(_) => {
+        const newStore = await StoreModel.findOne({ _id: idStore });
+        res.json({
+          message: "Cập nhật cửa hàng thành công",
+          store: newStore
+        });
       });
     }
   } catch (err) {
