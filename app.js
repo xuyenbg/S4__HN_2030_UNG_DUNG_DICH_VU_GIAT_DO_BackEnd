@@ -7,6 +7,7 @@ var bodyParser = require("body-parser");
 const swaggerjsdoc = require('swagger-jsdoc')
 const swaggerui = require('swagger-ui-express')
 const session = require('express-session');
+var admin = require('firebase-admin')
 require("./configs/db_config");
 
 // Web Server
@@ -42,6 +43,9 @@ var ratesApiRouter = require('./routes/api_routers/rates_api_router');
 var postsApiRouter = require('./routes/api_routers/post_api_router')
 var registerApiRouter = require('./routes/api_routers/register_api_router');
 var imageApiRouter = require('./routes/api_routers/image_api_router')
+
+var serviceAccount = require('./configs/washnow-3e740-firebase-adminsdk-xrx50-96e2f3e7a0.json')
+admin.initializeApp({credential: admin.credential.cert(serviceAccount)})
 
 var app = express();
 

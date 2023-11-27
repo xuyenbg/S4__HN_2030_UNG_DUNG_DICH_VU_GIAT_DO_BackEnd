@@ -1,4 +1,25 @@
 const OrderModel = require("../../models/order_model");
+const admin = require("firebase-admin");
+
+const sendNotification = (title, body, idUser) => {
+  try {
+    const payload = {
+      notification: {
+        title: title,
+        body: body,
+      },
+    };
+
+    admin
+      .messaging()
+      .sendToTopic(idUser, payload)
+      .then((response) => {
+        console.log("Id Notification:", response);
+      });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 exports.getListOrderModel = async (req, res) => {
   try {
@@ -125,9 +146,11 @@ exports.insertOrder = async (req, res) => {
       updateAt: Date.now(),
     });
 
-    await order.save();
+    await order.save().then((newOrder) => {
+      sendNotification("Thông báo đơn hàng", "Có đơn hàng mới", idUser);
 
-    res.send("Tạo đơn thành công");
+      res.send("Tạo đơn hàng thành công");
+    });
   } catch (e) {
     res.status(500).send("Có lỗi xảy ra");
     console.log(e);
@@ -155,9 +178,15 @@ exports.updateStatusOrder = async (req, res) => {
         status: status,
         updateAt: Date.now(),
       }
-    );
+    ).then((newOrder) => {
+      sendNotification(
+        "Thông báo đơn hàng",
+        "Trạng thái của đơn hàng đã được cập nhật",
+        idUser
+      );
 
-    res.send("Cập nhật trạng thái đơn hàng thành công");
+      res.send("Cập nhật trạng thái đơn hàng thành công");
+    });
   } catch (e) {
     res.status(500).send(`Có lỗi xảy ra ${e}`);
     console.log(e);
@@ -261,9 +290,15 @@ exports.updateOrder = async (req, res) => {
         listItem: listItem,
         updateAt: Date.now(),
       }
-    );
+    ).then((newOrder) => {
+      sendNotification(
+        "Thông báo đơn hàng",
+        "Cập nhật thông tin đơn hàng thành công",
+        idUser
+      );
 
-    res.send("Cập nhật thông tin đơn hàng thành công");
+      res.send("Cập nhật thông tin đơn hàng thành công");
+    });
   } catch (e) {
     res.status(500).send(`Có lỗi xảy ra ${e}`);
     console.log(e);
@@ -517,6 +552,50 @@ exports.getListOrderTodayByIdStore = async (req, res) => {
       },
     })
       .sort({ createAt: sortOption })
+      .populate("idUser")
+      .populate("idStore")
+      .populate("idAddress")
+      .populate("listItem.idService")
+      .populate("listItem.idService.attributeList._id")
+      .populate("listItem.attributeList")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      });
+
+    res.json(listOrder);
+  } catch (err) {
+    res.status(500).send("Có lỗi xảy ra");
+    console.log(err);
+  }
+};
+
+exports.getListOrderByDateAndStatus = async (req, res) => {
+  try {
+    const idStore = req.params.idStore;
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
+    const status = req.query.status;
+
+    const listOrder = await OrderModel.find({
+      idStore: idStore,
+      createAt: {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      },
+      status: status,
+    })
+      .sort({ createAt: -1 })
       .populate("idUser")
       .populate("idStore")
       .populate("idAddress")
