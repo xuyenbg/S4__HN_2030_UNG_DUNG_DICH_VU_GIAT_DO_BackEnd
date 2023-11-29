@@ -626,8 +626,8 @@ exports.getListOrderByDateAndStatus = async (req, res) => {
 };
 
 exports.getTotalOrderByDay = async (req, res) => {
-  const currentDate = moment().format('YYYY-MM-DD');
-    const listOrder = await OrderModel.find()
+  const currentDate = moment().format("YYYY-MM-DD");
+  const listOrder = await OrderModel.find()
     .populate("idUser")
     .populate("idStore")
     .populate("idAddress")
@@ -662,7 +662,7 @@ exports.getTotalOrderByDay = async (req, res) => {
       list.push(item);
     }
   });
-  res.status(200).json({ list: list, total: total });
+  res.status(200).json({ total: total, totalOrder: listOrder.length });
 };
 
 exports.getTotalByWeekMonth = async (req, res) => {
