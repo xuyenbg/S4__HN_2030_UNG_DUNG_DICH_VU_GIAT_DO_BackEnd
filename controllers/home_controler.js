@@ -1,5 +1,6 @@
 const StoreModel = require("../models/stores_model");
 const OrderModel = require("../models/order_model");
+const UserModel = require('../models/users_model');
 const moment = require("moment");
 
 exports.data = async (req, res) => {
@@ -12,6 +13,7 @@ exports.data = async (req, res) => {
     for (let index = 0; index < listOrder.length; index++) {
       totalOrder += listOrder[index].total;
     }
+
     // Đơn hàng hôm nay
 
     const listOrderByDate = await OrderModel.find({ status: 1 });
@@ -23,6 +25,11 @@ exports.data = async (req, res) => {
         countOrder++;
       }
     }
+
+    //Số lượng khách hàng
+
+    var listUser = await UserModel.find({idRole:'6522667961b6e95df121642e'});
+    
 
     //Pie chart
     var listOrderCancel = await OrderModel.find({status:5});
@@ -46,6 +53,7 @@ exports.data = async (req, res) => {
     numberOrderCancel:listOrderCancel.length,
     numberListOrderBySuccess:listOrderBySuccess.length,
     percentListOrderBySuccess:percentListOrderBySuccess,
-    sumPercent:sumPercent
+    sumPercent:sumPercent,
+    listUser:listUser.length
   });
 };
