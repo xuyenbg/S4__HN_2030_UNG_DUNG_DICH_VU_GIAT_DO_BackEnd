@@ -113,12 +113,11 @@ exports.getListStoreNearest = async (req, res) => {
     longitude: req.params.longitude,
   };
 
-  const listStore = await StoreModel.find()
+  const listStore = await StoreModel.find({status:1})
     .populate("idUser")
     .populate("idAddress");
   const distances = listStore.map((store) => ({
-    storeId: store.id.toString(),
-    storeName: store.name,
+    ...store._doc,
     distance: parseFloat(
       geolib.getDistance(userLocation, {
         latitude: store.idAddress.latitude || 0,
