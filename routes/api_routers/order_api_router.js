@@ -13,6 +13,7 @@ const {
   getOrderDetail,
   getListOrderTodayByIdStore,
   getListOrderByDateAndStatus,
+  getTotalByWeekMonth,
 } = require("../../controllers/api_controllers/order_api_controllers");
 var router = express.Router();
 
@@ -40,6 +41,7 @@ router.get(
   getListOrderTodayByIdStore
 );
 router.get("/list-order-by-date-status/:idStore", getListOrderByDateAndStatus);
-router.get("/total-order-by-currentdate",getTotalOrderByDay)
+router.get("/total-order-by-currentdate", getTotalOrderByDay);
+router.get("/total-order-by-week-month", getTotalByWeekMonth);
 
 module.exports = router;

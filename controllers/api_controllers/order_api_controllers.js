@@ -664,3 +664,55 @@ exports.getTotalOrderByDay = async (req, res) => {
   });
   res.status(200).json({ list: list, total: total });
 };
+
+exports.getTotalByWeekMonth = async (req, res) => {
+  try {
+    const month = parseInt(req.query.month);
+    const week = parseInt(req.query.week);
+
+    let startDate, endDate;
+
+    if (!isNaN(week)) {
+      const today = moment();
+      const currentYear = today.year();
+      const currentMonth = today.month() + 1;
+
+      const firstDayOfMonth = moment(
+        `${currentYear}-${currentMonth}-02`,
+        "YYYY-MM-DD"
+      );
+      const startOfWeek = firstDayOfMonth.clone().add(week - 1, "weeks");
+      const endOfWeek = startOfWeek.clone().add(5, "days").endOf("day");
+
+      startDate = startOfWeek.startOf("day").toDate();
+      endDate = endOfWeek.endOf("day").toDate();
+    } else if (!isNaN(month)) {
+      const today = moment();
+      const currentYear = today.year();
+      startDate = moment(`${currentYear}-${month}-02`, "YYYY-MM-DD")
+        .startOf("day")
+        .toDate();
+      endDate = moment(`${currentYear}-${month}-02`, "YYYY-MM-DD")
+        .endOf("month")
+        .endOf("day")
+        .toDate();
+    } else {
+      return res.status(404).send("Not Found");
+    }
+
+    // console.log("start date", startDate);
+    // console.log("end date", endDate);
+
+    const orders = await OrderModel.find({
+      createAt: { $gte: startDate, $lt: endDate },
+      status: { $in: [3, 4] },
+    });
+
+    const totalAmount = orders.reduce((sum, order) => sum + order.total, 0);
+
+    res.json({ total: totalAmount, totalOrder: orders.length });
+  } catch (err) {
+    res.status(500).send("Có lỗi xảy ra");
+    console.log(err);
+  }
+};
