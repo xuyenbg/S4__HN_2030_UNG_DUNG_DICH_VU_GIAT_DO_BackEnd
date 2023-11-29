@@ -1,5 +1,6 @@
 const OrderModel = require("../../models/order_model");
 const admin = require("firebase-admin");
+const moment = require("moment");
 
 const sendNotification = (title, body, idUser) => {
   try {
@@ -622,4 +623,44 @@ exports.getListOrderByDateAndStatus = async (req, res) => {
     res.status(500).send("Có lỗi xảy ra");
     console.log(err);
   }
+};
+
+exports.getTotalOrderByDay = async (req, res) => {
+  const currentDate = req.body.currentDate;
+  const listOrder = await OrderModel.find()
+    .populate("idUser")
+    .populate("idStore")
+    .populate("idAddress")
+    .populate("listItem.idService")
+    .populate("listItem.idService.attributeList._id")
+    .populate("listItem.attributeList")
+    .populate({
+      path: "idStore",
+      populate: {
+        path: "idUser",
+        model: "UserModel",
+      },
+    })
+    .populate({
+      path: "idStore",
+      populate: {
+        path: "idAddress",
+        model: "AddressModel",
+      },
+    });
+
+  var total = 0;
+  var list = [];
+  listOrder.forEach((item) => {
+    const timestamp = new Date(item.createAt);
+    const year = timestamp.getUTCFullYear();
+    const month = timestamp.getUTCMonth() + 1;
+    const day = timestamp.getUTCDate();
+    const date = year + "-" + month + "-" + day;
+    if (date == currentDate) {
+      total += item.total;
+      list.push(item);
+    }
+  });
+  res.status(200).json({ list: list, total: total });
 };

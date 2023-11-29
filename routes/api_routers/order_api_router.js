@@ -8,6 +8,7 @@ const {
   getListOrderByIdUser,
   insertOrder,
   updateStatusOrder,
+  getTotalOrderByDay,
   updateOrder,
   getOrderDetail,
   getListOrderTodayByIdStore,
@@ -39,5 +40,6 @@ router.get(
   getListOrderTodayByIdStore
 );
 router.get("/list-order-by-date-status/:idStore", getListOrderByDateAndStatus);
+router.get("/total-order-by-currentdate",getTotalOrderByDay)
 
 module.exports = router;
