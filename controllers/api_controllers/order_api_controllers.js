@@ -669,6 +669,7 @@ exports.getTotalByWeekMonth = async (req, res) => {
   try {
     const month = parseInt(req.query.month);
     const week = parseInt(req.query.week);
+    const idStore = req.params.idStore;
 
     let startDate, endDate;
 
@@ -704,6 +705,7 @@ exports.getTotalByWeekMonth = async (req, res) => {
     // console.log("end date", endDate);
 
     const orders = await OrderModel.find({
+      idStore: idStore,
       createAt: { $gte: startDate, $lt: endDate },
       status: { $in: [3, 4] },
     });
