@@ -18,9 +18,9 @@ exports.getListAddress = async (req, res) => {
 };
 
 exports.addAddress = async (req, res) => {
-  const { longitude, latitude, address, idUser, isDefault } = req.body;
-
   try {
+    const { longitude, latitude, address, idUser, isDefault } = req.body;
+
     const newAddress = new AddressModel({
       longitude: longitude,
       latitude: latitude,
@@ -28,27 +28,107 @@ exports.addAddress = async (req, res) => {
       idUser: idUser,
       address: address,
     });
-    await newAddress.save();
-    res.status(200).json("Đăng ký thành công");
+
+    if (isDefault == true) {
+      newAddress.save().then((newAddress) => {
+        AddressModel.updateMany(
+          { _id: { $ne: newAddress.id }, idUser: idUser },
+          { $set: { isDefault: false } }
+        )
+          .then(() => {
+            // Cập nhật địa chỉ được chỉ định thành mặc định (true)
+            return AddressModel.findByIdAndUpdate(newAddress.id, {
+              $set: { isDefault: true },
+            });
+          })
+          .then(() => {
+            res.send("Thêm địa chỉ thành công");
+          });
+      });
+    } else {
+      newAddress.save().then((_) => {
+        res.send("Thêm địa chỉ thành công");
+      });
+    }
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).send("Có lỗi xảy ra");
+    console.log(error);
   }
 };
 
 exports.updateAddress = async (req, res) => {
-  const { longitude, latitude, address, idUser, isDefault } = req.body;
   try {
-    let obj = {
-      longitude: longitude,
-      latitude: latitude,
-      isDefault: isDefault,
-      idUser: idUser,
-      address: address,
-    };
-    await AddressModel.updateOne({ _id: req.params.idAddress }, obj);
-    res.status(200).json("Sửa thành công");
+    const idAddress = req.params.idAddress;
+    const { longitude, latitude, address, isDefault } = req.body;
+
+    const addressObject = await AddressModel.findOne({ _id: idAddress });
+
+    if (isDefault == true) {
+      AddressModel.updateMany(
+        { _id: { $ne: idAddress }, idUser: addressObject.idUser },
+        { $set: { isDefault: false } }
+      )
+        .then(() => {
+          // Cập nhật địa chỉ được chỉ định thành mặc định (true)
+          return AddressModel.findByIdAndUpdate(idAddress, {
+            $set: { isDefault: true },
+          });
+        })
+        .then(async () => {
+          await AddressModel.findByIdAndUpdate(
+            { _id: idAddress },
+            {
+              longitude:
+                longitude != null || longitude != undefined
+                  ? longitude
+                  : addressObject.longitude,
+              latitude:
+                latitude != null || latitude != undefined
+                  ? latitude
+                  : addressObject.latitude,
+              address:
+                address != null || address != undefined
+                  ? address
+                  : addressObject.address,
+              isDefault:
+                isDefault != null || isDefault != undefined
+                  ? isDefault
+                  : addressObject.isDefault,
+              idUser: addressObject.idUser,
+            }
+          ).then((_) => {
+            res.send("Cập nhật địa chỉ thành công");
+          });
+        });
+    } else {
+      await AddressModel.findByIdAndUpdate(
+        { _id: idAddress },
+        {
+          longitude:
+            longitude != null || longitude != undefined
+              ? longitude
+              : addressObject.longitude,
+          latitude:
+            latitude != null || latitude != undefined
+              ? latitude
+              : addressObject.latitude,
+          address:
+            address != null || address != undefined
+              ? address
+              : addressObject.address,
+          isDefault:
+            isDefault != null || isDefault != undefined
+              ? isDefault
+              : addressObject.isDefault,
+          idUser: addressObject.idUser,
+        }
+      ).then((_) => {
+        res.send("Cập nhật địa chỉ thành công");
+      });
+    }
   } catch (error) {
-    res.status(500).json(error);
+    console.log(error);
+    res.status(500).send("Có lỗi xảy ra");
   }
 };
 
@@ -77,6 +157,19 @@ exports.updateAddressDefault = (req, res) => {
       });
   } catch (e) {
     console.log(e);
+    res.status(500).send("Có lỗi xảy ra");
+  }
+};
+
+exports.deleteAddress = async (req, res) => {
+  try {
+    const idAddress = req.params.idAddress;
+
+    await AddressModel.findByIdAndDelete({ _id: idAddress }).then((_) => {
+      res.send("Xoá địa chỉ thành công");
+    });
+  } catch (err) {
+    console.log(err);
     res.status(500).send("Có lỗi xảy ra");
   }
 };
