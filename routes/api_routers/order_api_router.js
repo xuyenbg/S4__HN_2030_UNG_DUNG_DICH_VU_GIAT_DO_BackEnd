@@ -42,6 +42,6 @@ router.get(
 );
 router.get("/list-order-by-date-status/:idStore", getListOrderByDateAndStatus);
 router.get("/total-order-by-currentdate", getTotalOrderByDay);
-router.get("/total-order-by-week-month", getTotalByWeekMonth);
+router.get("/total-order-by-week-month/:idStore", getTotalByWeekMonth);
 
 module.exports = router;
