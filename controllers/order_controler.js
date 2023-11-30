@@ -5,14 +5,14 @@ const moment = require("moment");
 
 exports.getListOrderModel = async (req, res) => {
   try {
-    const listOrder = await OrderModel.find({ status: 4 })
+    const listOrder = await OrderModel.find({status: { $in: [3, 4] }})
       .populate("idUser")
       .populate("idStore");
    const listMerge = new Set(listOrder.map((item)=>item['idStore']))
    var list = []
 
    for (const item of listMerge) {
-    const listOrderByIdStore = await OrderModel.find({idStore:item._id,status:4})
+    const listOrderByIdStore = await OrderModel.find({idStore:item._id,status: { $in: [3, 4] }})
     const objOrderByIdStore = await OrderModel.findOne({idStore:item._id}).populate("idUser")
     .populate("idStore");
     let total = 0;
@@ -35,7 +35,7 @@ exports.getListOrderModel = async (req, res) => {
 };
 
 exports.getlistOrderByDate = async(req,res)=>{
-  const listOrderByDate = await OrderModel.find({ status: 4 }).populate("idUser");
+  const listOrderByDate = await OrderModel.find({ status: { $in: [3, 4] } }).populate("idUser");
   
   res.render('table/table_tong_don_hang_dat_hom_nay',{list:listOrderByDate})
 }
