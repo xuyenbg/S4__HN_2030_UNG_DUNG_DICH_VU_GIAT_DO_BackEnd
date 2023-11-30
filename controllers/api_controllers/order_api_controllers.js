@@ -662,7 +662,7 @@ exports.getTotalOrderByDay = async (req, res) => {
       list.push(item);
     }
   });
-  res.status(200).json({ total: total, totalOrder: listOrder.length });
+  res.status(200).json({ total: total, totalOrder: list.length });
 };
 
 exports.getTotalByWeekMonth = async (req, res) => {
