@@ -627,7 +627,7 @@ exports.getListOrderByDateAndStatus = async (req, res) => {
 
 exports.getTotalOrderByDay = async (req, res) => {
   const currentDate = moment().format("YYYY-MM-DD");
-  const listOrder = await OrderModel.find()
+  const listOrder = await OrderModel.find({idStore:req.params.idStore,status:{ $in: [1,2,3,4] }})
     .populate("idUser")
     .populate("idStore")
     .populate("idAddress")
@@ -658,11 +658,12 @@ exports.getTotalOrderByDay = async (req, res) => {
     const day = timestamp.getUTCDate();
     const date = year + "-" + month + "-" + day;
     if (date == currentDate) {
+      console.log(item.createAt);
       total += item.total;
       list.push(item);
     }
   });
-  res.status(200).json({ total: total, totalOrder: listOrder.length });
+  res.status(200).json({ total: total, totalOrder: list.length });
 };
 
 exports.getTotalByWeekMonth = async (req, res) => {
