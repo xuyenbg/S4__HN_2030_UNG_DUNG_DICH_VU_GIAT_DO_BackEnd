@@ -1,8 +1,9 @@
 const OrderModel = require("../../models/order_model");
+const NotificationModel = require("../../models/notification_model");
 const admin = require("firebase-admin");
 const moment = require("moment");
 
-const sendNotification = (title, body, idUser) => {
+const sendNotification = (title, body, idUser, idOrder) => {
   try {
     const payload = {
       notification: {
@@ -14,8 +15,17 @@ const sendNotification = (title, body, idUser) => {
     admin
       .messaging()
       .sendToTopic(idUser, payload)
-      .then((response) => {
+      .then(async (response) => {
         console.log("Id Notification:", response);
+        const newNotification = new NotificationModel({
+          idUser: idUser,
+          title: title,
+          body: body,
+          createAt: Date.now(),
+          idOrder: idOrder,
+        });
+
+        await newNotification.save();
       });
   } catch (err) {
     console.log(err);
@@ -148,7 +158,12 @@ exports.insertOrder = async (req, res) => {
     });
 
     await order.save().then((newOrder) => {
-      sendNotification("Thông báo đơn hàng", "Có đơn hàng mới", idUser);
+      sendNotification(
+        "Thông báo đơn hàng",
+        "Có đơn hàng mới",
+        idUser,
+        newOrder._id
+      );
 
       res.send("Tạo đơn hàng thành công");
     });
@@ -183,7 +198,8 @@ exports.updateStatusOrder = async (req, res) => {
       sendNotification(
         "Thông báo đơn hàng",
         "Trạng thái của đơn hàng đã được cập nhật",
-        idUser
+        idUser,
+        idOrder
       );
 
       res.send("Cập nhật trạng thái đơn hàng thành công");
@@ -295,7 +311,8 @@ exports.updateOrder = async (req, res) => {
       sendNotification(
         "Thông báo đơn hàng",
         "Cập nhật thông tin đơn hàng thành công",
-        idUser
+        idUser,
+        idOrder
       );
 
       res.send("Cập nhật thông tin đơn hàng thành công");
@@ -627,7 +644,10 @@ exports.getListOrderByDateAndStatus = async (req, res) => {
 
 exports.getTotalOrderByDay = async (req, res) => {
   const currentDate = moment().format("YYYY-MM-DD");
-  const listOrder = await OrderModel.find({idStore:req.params.idStore,status:{ $in: [3,4] }})
+  const listOrder = await OrderModel.find({
+    idStore: req.params.idStore,
+    status: { $in: [3, 4] },
+  })
     .populate("idUser")
     .populate("idStore")
     .populate("idAddress")
@@ -699,11 +719,17 @@ exports.getTotalByWeekMonth = async (req, res) => {
         .endOf("day")
         .toDate();
     } else {
-      return res.status(404).send("Not Found");
+      // return res.status(404).send("Not Found");
+      const today = moment();
+      const startOfWeek = today.clone().startOf("week");
+      const endOfWeek = today.clone().endOf("week");
+
+      startDate = startOfWeek.toDate();
+      endDate = endOfWeek.toDate();
     }
 
-    // console.log("start date", startDate);
-    // console.log("end date", endDate);
+    console.log(startDate);
+    console.log(endDate);
 
     const orders = await OrderModel.find({
       idStore: idStore,
