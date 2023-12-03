@@ -28,11 +28,13 @@ exports.data = async (req, res) => {
   var listStore = await StoreModel.find();
   
   // Tổng doanh thu tất cả cửa hàng
-  var listOrder = await OrderModel.find();
+  var listOrder = await OrderModel.find({ status: { $in: [3, 4] } });
   var totalOrder = 0;
   for (let index = 0; index < listOrder.length; index++) {
     totalOrder += listOrder[index].total;
   }
+
+  var listTotalOrder = await OrderModel.find()
 
   // Tổng doanh thu hôm nay
 
@@ -194,7 +196,7 @@ listOrdersByYear.forEach((item)=>{
   return res.render("home", {
     count: listStore.length,
     totalOrder: totalOrder,
-    listOrder: listOrder.length,
+    listOrder: listTotalOrder.length,
     percentListOrderCancel: percentListOrderCancel,
     numberOrderCancel: listOrderCancel.length,
     numberListOrderBySuccess: listOrderBySuccess.length,

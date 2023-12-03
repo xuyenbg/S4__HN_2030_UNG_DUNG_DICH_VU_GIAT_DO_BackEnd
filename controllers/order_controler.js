@@ -118,7 +118,7 @@ exports.getlistOrderByMonth = async (req, res) => {
 
     const date = new Date();
     const month = date.getMonth()+1
-  res.render("table/table_tong_don_hang", { list: listOrdersByMonth,month:month });
+  res.render("table/table_tong_don_hang_thang", { list: listOrdersByMonth,month:month });
 };
 
 exports.getlistOrderByYear = async (req, res) => {
