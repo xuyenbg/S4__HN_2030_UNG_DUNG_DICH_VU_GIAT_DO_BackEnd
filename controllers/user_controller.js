@@ -10,3 +10,9 @@ exports.getListUser = async (req, res) => {
         res.status(500).send("Có lỗi xảy ra")
     }
 }
+
+exports.getUserDetail = async (req,res) =>{
+    const objUser = await UserModel.findOne({_id:req.params.idUser.slice(1)})
+    console.log(objUser);
+    res.render('detail/user_detail')
+}

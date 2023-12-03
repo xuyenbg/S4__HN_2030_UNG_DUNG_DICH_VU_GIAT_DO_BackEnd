@@ -26,8 +26,9 @@ const getTotalByMonth = async (month) => {
 exports.data = async (req, res) => {
   // Số lượng store
   var listStore = await StoreModel.find();
+  
   // Tổng doanh thu tất cả cửa hàng
-  var listOrder = await OrderModel.find({ status: { $in: [3, 4] } });
+  var listOrder = await OrderModel.find();
   var totalOrder = 0;
   for (let index = 0; index < listOrder.length; index++) {
     totalOrder += listOrder[index].total;

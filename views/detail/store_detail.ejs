@@ -12,7 +12,7 @@
 
     <title>WashNow Server</title>
 
-    <!-- Custom fonts for this template -->
+    <!-- Custom fonts for this template-->
     <link
       href="/vendor/fontawesome-free/css/all.min.css"
       rel="stylesheet"
@@ -23,14 +23,8 @@
       rel="stylesheet"
     />
 
-    <!-- Custom styles for this template -->
+    <!-- Custom styles for this template-->
     <link href="/stylesheets/sb-admin-2.min.css" rel="stylesheet" />
-
-    <!-- Custom styles for this page -->
-    <link
-      href="/vendor/datatables/dataTables.bootstrap4.min.css"
-      rel="stylesheet"
-    />
   </head>
 
   <body id="page-top">
@@ -44,7 +38,7 @@
         <!-- Sidebar - Brand -->
         <a
           class="sidebar-brand d-flex align-items-center justify-content-center"
-          href="/"
+          href="#"
         >
           <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
@@ -56,10 +50,10 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="/">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a
+            <span>Thống kê</span></a
           >
         </li>
 
@@ -71,29 +65,23 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-          <a
-            class="nav-link collapsed"
-            href="#"
-            data-toggle="collapse"
-            data-target="#collapseTwo"
-            aria-expanded="true"
-            aria-controls="collapseTwo"
-          >
+          <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Components</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Components:</h6>
+                        <a class="collapse-item" href="#">Buttons</a>
+                        <a class="collapse-item" href="#">Cards</a>
+                    </div>
+                </div> -->
+          <!-- Code mới -->
+          <a class="nav-link collapsed" href="/auth/login">
             <i class="fas fa-fw fa-cog"></i>
             <span>Components</span>
           </a>
-          <div
-            id="collapseTwo"
-            class="collapse"
-            aria-labelledby="headingTwo"
-            data-parent="#accordionSidebar"
-          >
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Custom Components:</h6>
-              <a class="collapse-item" href="buttons.html">Buttons</a>
-              <a class="collapse-item" href="cards.html">Cards</a>
-            </div>
-          </div>
         </li>
 
         <!-- Nav Item - Utilities Collapse Menu -->
@@ -117,12 +105,10 @@
           >
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Custom Utilities:</h6>
-              <a class="collapse-item" href="utilities-color.html">Colors</a>
-              <a class="collapse-item" href="utilities-border.html">Borders</a>
-              <a class="collapse-item" href="utilities-animation.html"
-                >Animations</a
-              >
-              <a class="collapse-item" href="utilities-other.html">Other</a>
+              <a class="collapse-item" href="#">Colors</a>
+              <a class="collapse-item" href="#">Borders</a>
+              <a class="collapse-item" href="#">Animations</a>
+              <a class="collapse-item" href="#">Other</a>
             </div>
           </div>
         </li>
@@ -154,29 +140,27 @@
           >
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Login Screens:</h6>
-              <a class="collapse-item" href="login.html">Login</a>
-              <a class="collapse-item" href="register.html">Register</a>
-              <a class="collapse-item" href="forgot-password.html"
-                >Forgot Password</a
-              >
+              <a class="collapse-item" href="#">Login</a>
+              <a class="collapse-item" href="#">Register</a>
+              <a class="collapse-item" href="#">Forgot Password</a>
               <div class="collapse-divider"></div>
               <h6 class="collapse-header">Other Pages:</h6>
-              <a class="collapse-item" href="404.html">404 Page</a>
-              <a class="collapse-item" href="blank.html">Blank Page</a>
+              <a class="collapse-item" href="#">404 Page</a>
+              <a class="collapse-item" href="#">Blank Page</a>
             </div>
           </div>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-          <a class="nav-link" href="charts.html">
+          <a class="nav-link" href="#">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Charts</span></a
           >
         </li>
 
         <!-- Nav Item - Tables -->
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="/table">
             <i class="fas fa-fw fa-table"></i>
             <span>Tables</span></a
@@ -202,14 +186,12 @@
             class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
           >
             <!-- Sidebar Toggle (Topbar) -->
-            <form class="form-inline">
-              <button
-                id="sidebarToggleTop"
-                class="btn btn-link d-md-none rounded-circle mr-3"
-              >
-                <i class="fa fa-bars"></i>
-              </button>
-            </form>
+            <button
+              id="sidebarToggleTop"
+              class="btn btn-link d-md-none rounded-circle mr-3"
+            >
+              <i class="fa fa-bars"></i>
+            </button>
 
             <!-- Topbar Search -->
             <form
@@ -493,62 +475,76 @@
 
           <!-- Begin Page Content -->
           <div class="container-fluid">
-            <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Số lượng cửa hàng</h1>
-            <p class="mb-4"></p>
+            <h1>Chi tiết cửa hàng</h1>
 
-            <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table
-                    class="table table-bordered"
-                    id="dataTable"
-                    width="100%"
-                    cellspacing="0"
-                  >
-                    <thead>
-                      <tr>
-                        <th>Id cửa hàng</th>
-                        <th>Tên cửa hàng</th>
-                        <th>Họ và tên</th>
-                        <th>Số điện thoại</th>
-                        <th>Chức năng</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th>Id cửa hàng</th>
-                        <th>Tên cửa hàng</th>
-                        <th>Họ và tên</th>
-                        <th>Số điện thoại</th>
-                        <th>Chức năng</th>
+            <section class="py-5">
+              <div class="container px-4 px-lg-5 my-5">
+                <div class="row gx-4 gx-lg-5 align-items-center">
+                  <div class="col-md-6">
+                    <img
+                      class="card-img-top mb-5 mb-md-0"
+                      src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg"
+                      alt="..."
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <div class="small mb-1"></div>
+                    <h1 class="display-5 fw-bolder"><%=objStore.name%></h1>
+                    <% if(objStore.status === 0){ %>
+                    <p style="color: red">Đóng cửa</p>
+                    <% } else{ %>
+                    <p style="color: green">Đang mở cửa</p>
+                    <% } %>
+                    <div class="fs-5 mb-5">
+                      <div class="d-flex small text-warning mb-2">
+                        <% for (let index = 0; index < objStore.rate; index++) {
+                        %>
+                        <img
+                          src="data:image/png;base64,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"
+                          style="height: 50; width: 50px"
+                        />
+                        <% } %>
+                      </div>
+                    </div>
+                    <h4>Chủ store</h4>
+                    <div class="d-flex">
+                      <p><%=objStore.idUser.fullname%></p>
+                    </div>
+                    <p></p>
+                    <h3>Dịch vụ</h3>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Stt</th>
+                          <th scope="col">Tên</th>
+                          <th scope="col">Giá</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% listServiceByIdStore.forEach((item,index)=>{ %>
+                        <tr>
+                          <td><%=index+1%></td>
+                          <td><%=item.name%></td>
+                          <td><%=item.price%>vnđ</td>
+                        </tr>
 
-                      </tr>
-                    </tfoot>
-                    <tbody>
-                      <% listStore.forEach((element, index)=> { %>
-                      <tr>
-                        <td><%=element._id%></td>
-                        <td><%=element.name%></td>
-                        <td><%=element.idUser.fullname%></td>
-                        <td><%=element.idUser.phone%></td>
-
-                        
-                        <td>
-                          <a href="/stores/store_detail/:<%=element._id%>">
-                            <p class="btn btn-primary border-0 rounded">Xem chi tiết</p>
-
-                          </a>
-                        </td>
-                      </tr>
-                      <% }) %>
-                    </tbody>
-                  </table>
+                        <% }) %>
+                      </tbody>
+                    </table>
+                    <h3>Hình thức lấy đồ</h3>
+                    <% objStore.transportTypeList.forEach((item)=>{%>
+                    <p><%=item%></p>
+                    <%}) %>
+                    <div>
+                      <h3>Địa chỉ</h3>
+                      <p><%=objStore.idAddress.address%></p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </section>
           </div>
+
           <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
@@ -557,7 +553,7 @@
         <footer class="sticky-footer bg-white">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright &copy; Your Website 2020</span>
+              <span>Copyright &copy; Your Website 2021</span>
             </div>
           </div>
         </footer>
@@ -622,10 +618,6 @@
     <script src="/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="/js/demo/datatables-demo.js"></script>
+    <script src="/vendor/chart.js/Chart.min.js"></script>
   </body>
 </html>
