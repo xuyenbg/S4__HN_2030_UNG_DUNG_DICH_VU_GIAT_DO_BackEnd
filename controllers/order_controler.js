@@ -54,7 +54,9 @@ exports.getlistOrderByDate = async (req, res) => {
     }
   }
 
-  res.render("table/table_tong_don_hang_theo_ngay", { list: list });
+  const currentDateFormat = moment().format("DD-MM-YYYY")
+
+  res.render("table/table_tong_don_hang_theo_ngay", { list: list,currentDate:currentDateFormat});
 };
 
 exports.getlistOrderByWeek = async (req, res) => {
@@ -113,7 +115,10 @@ exports.getlistOrderByMonth = async (req, res) => {
   })
     .populate("idUser")
     .populate("idStore");
-  res.render("table/table_tong_don_hang", { list: listOrdersByMonth });
+
+    const date = new Date();
+    const month = date.getMonth()+1
+  res.render("table/table_tong_don_hang", { list: listOrdersByMonth,month:month });
 };
 
 exports.getlistOrderByYear = async (req, res) => {
@@ -132,6 +137,7 @@ exports.getlistOrderByYear = async (req, res) => {
   })
     .populate("idUser")
     .populate("idStore");
-
-  res.render("table/table_tong_dong_hang_nam", { list: listOrdersByYear });
+  const date = new Date();
+  const year = date.getFullYear();
+  res.render("table/table_tong_dong_hang_nam", { list: listOrdersByYear ,year:year});
 };
