@@ -1,5 +1,6 @@
 const OrderModel = require("../../models/order_model");
 const NotificationModel = require("../../models/notification_model");
+const StoreModel = require("../../models/stores_model");
 const admin = require("firebase-admin");
 const moment = require("moment");
 
@@ -157,11 +158,13 @@ exports.insertOrder = async (req, res) => {
       updateAt: Date.now(),
     });
 
+    const store = await StoreModel.findOne({ _id: idStore });
+
     await order.save().then((newOrder) => {
       sendNotification(
         "Thông báo đơn hàng",
         "Có đơn hàng mới",
-        idUser,
+        store.idUser,
         newOrder._id
       );
 
