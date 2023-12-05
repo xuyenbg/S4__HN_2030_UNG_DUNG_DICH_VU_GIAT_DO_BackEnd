@@ -158,13 +158,22 @@ exports.insertOrder = async (req, res) => {
       updateAt: Date.now(),
     });
 
-    const store = await StoreModel.findOne({ _id: idStore });
+    const store = await StoreModel.findById({ _id: idStore });
+
+    // let title, body;
+
+    // switch(status) {
+    //   case 0:
+    //     title = "Thông báo đơn hàng"
+    //     body = "Có đơn hàng mới"
+    //     break;
+    // }
 
     await order.save().then((newOrder) => {
       sendNotification(
         "Thông báo đơn hàng",
         "Có đơn hàng mới",
-        store.idUser,
+        store.idUser.toString(),
         newOrder._id
       );
 
