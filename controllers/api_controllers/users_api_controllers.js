@@ -108,11 +108,15 @@ exports.register = async (req, res) => {
     return;
   }
   try {
-    await objUser.save();
-    res.status(200).send("Đăng ký thành công");
+    await objUser.save().then((newUser) => {
+      res.status(200).json({
+        message: "Đăng nhập thành công",
+        user: newUser,
+      });
+    });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send(error);
+    console.log(error);
+    res.status(500).send("Có lỗi xảy ra");
   }
 };
 
