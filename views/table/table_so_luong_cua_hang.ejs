@@ -509,7 +509,7 @@
                   >
                     <thead>
                       <tr>
-                        <th>Id cửa hàng</th>
+                        <th>STT</th>
                         <th>Tên cửa hàng</th>
                         <th>Họ và tên</th>
                         <th>Số điện thoại</th>
@@ -518,7 +518,7 @@
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Id cửa hàng</th>
+                        <th>STT</th>
                         <th>Tên cửa hàng</th>
                         <th>Họ và tên</th>
                         <th>Số điện thoại</th>
@@ -529,7 +529,7 @@
                     <tbody>
                       <% listStore.forEach((element, index)=> { %>
                       <tr>
-                        <td><%=element._id%></td>
+                        <td><%=index+1%></td>
                         <td><%=element.name%></td>
                         <td><%=element.idUser.fullname%></td>
                         <td><%=element.idUser.phone%></td>

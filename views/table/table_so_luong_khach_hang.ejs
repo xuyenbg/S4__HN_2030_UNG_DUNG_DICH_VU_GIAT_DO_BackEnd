@@ -510,7 +510,7 @@
                   >
                     <thead>
                       <tr>
-                        <th>Id khách hàng</th>
+                        <th>STT</th>
                         <th>Họ tên</th>
                         <th>Số điện thoại</th>
                         s
@@ -518,7 +518,7 @@
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Id khách hàng</th>
+                        <th>STT</th>
                         <th>Họ tên</th>
                         <th>Số điện thoại</th>
                         
@@ -526,9 +526,9 @@
                     </tfoot>
                     <tbody>
                         <%
-                        listUser.forEach((item)=>{%>
+                        listUser.forEach((item, index)=>{%>
                         <tr>
-                        <td><%=item._id%></td>
+                        <td><%=index+1%></td>
                         <td><%=item.fullname%></td>
                         <td><%=item.phone%></td>                       
                       </tr>

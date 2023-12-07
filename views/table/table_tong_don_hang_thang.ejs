@@ -509,8 +509,8 @@
                   >
                     <thead>
                       <tr>
-                        <th>Id đơn hàng</th>
-                        <th>Id khách hàng</th>
+                        <th>STT</th>
+                        <!-- <th>Id khách hàng</th> -->
                         <th>Tên khách hàng</th>
                         <th>Giá trị đơn hàng</th>
                         
@@ -518,20 +518,20 @@
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Id đơn hàng</th>
-                        <th>Id khách hàng</th>
+                        <th>STT</th>
+                        <!-- <th>Id khách hàng</th> -->
                         <th>Tên khách hàng</th>
                         <th>Giá trị đơn hàng</th>
                         
                       </tr>
                     </tfoot>
                     <tbody>
-                      <% list.forEach(element => { %>
+                      <% list.forEach((element, index) => { %>
                       <tr>
-                        <td><%=element._id%></td>
-                        <td><%=element.idUser._id%></td>
+                        <td><%=index+1%></td>
+                        <!-- <td><%=element.idUser._id%></td> -->
                         <td><%=element.idUser.fullname%></td>
-                        <td><%=element.total%></td>
+                        <td><%=element.total%>đ</td>
                         
                       </tr>
                       <% }) %>
