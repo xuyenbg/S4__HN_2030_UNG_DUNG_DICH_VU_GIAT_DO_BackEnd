@@ -110,7 +110,7 @@ exports.register = async (req, res) => {
   try {
     await objUser.save().then((newUser) => {
       res.status(200).json({
-        message: "Đăng nhập thành công",
+        message: "Đăng ký thành công",
         user: newUser,
       });
     });
