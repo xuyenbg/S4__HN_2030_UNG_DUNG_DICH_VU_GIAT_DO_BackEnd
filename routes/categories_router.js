@@ -8,6 +8,7 @@ const {
 } = require("../controllers/categories_controller");
 const router = express.Router();
 const multer = require("multer");
+const checkLogin = require("../middleware/checkLogin");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -19,6 +20,8 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
+router.use(checkLogin.reqLogin);
 
 router.get("/", getListCategory);
 router.get("/add", renderAddPage);

@@ -799,7 +799,7 @@
                       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                           <tr>
-                            <th>Id cửa hàng</th>
+                            <th>STT</th>
                             <th>Tên cửa hàng</th>
                             <th>Tổng doanh thu</th>
                             <th>Số đơn</th>
@@ -808,7 +808,7 @@
                         </thead>
                         <tfoot>
                           <tr>
-                            <th>Id cửa hàng</th>
+                            <th>STT</th>
                             <th>Tên cửa hàng</th>
                             <th>Tổng doanh thu</th>
                             <th>Số đơn</th>
@@ -818,7 +818,7 @@
                           <tbody>
                             <% sortListStoreTop.forEach((element, index)=> { %>
                               <tr>
-                                <td><%=element._id%></td>
+                                <td><%=index+1%></td>
                                 <td><%=element.idStore.name%></td>
                                 <td><%=element.total%></td>
                                 <td><%=element.countOrder%></td>
