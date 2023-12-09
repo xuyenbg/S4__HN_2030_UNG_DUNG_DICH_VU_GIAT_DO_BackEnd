@@ -1,6 +1,6 @@
 const ServiceModel = require("../../models/services_model");
 const SaleModel = require("../../models/sale_model");
-const AttributeModel = require("../../models/attribute_model")
+const AttributeModel = require("../../models/attribute_model");
 
 exports.getListService = async (req, res) => {
   try {
@@ -132,7 +132,7 @@ exports.getServiceByIdCategory = async (req, res) => {
       );
 
       if (!exist) {
-        uniqueServices.push(service)
+        uniqueServices.push(service);
       }
     });
 
@@ -156,9 +156,9 @@ exports.insertService = async (req, res) => {
       unitSale,
       valueSale,
     } = req.body;
-    console.log(attributeList)
-    console.log(JSON.parse(attributeList[0]))
-  
+    console.log(attributeList);
+    // console.log(JSON.parse(attributeList[0]))
+
     if (
       unitSale != undefined ||
       unitSale != null ||
@@ -169,24 +169,25 @@ exports.insertService = async (req, res) => {
         value: valueSale,
         unit: unitSale,
       });
-      var listAttribute = []
+      var listAttribute = [];
       if (attributeList.length != 0) {
         for (let index = 0; index < attributeList.length; index++) {
           try {
             var objAttribute = JSON.parse(attributeList[index])
-            console.log("name :" + objAttribute.name)
-            console.log("price :" + objAttribute.price)
+            // var objAttribute = attributeList[index];
+
+            console.log("name :" + objAttribute.name);
+            console.log("price :" + objAttribute.price);
             const insertAttribute = new AttributeModel({
               name: objAttribute.name,
-              price: objAttribute.price
-            })
+              price: objAttribute.price,
+            });
             await insertAttribute.save().then((newAttribute) => {
-              listAttribute.push(newAttribute._id)
-            })
+              listAttribute.push(newAttribute._id);
+            });
           } catch (err) {
-            console.log(err)
+            console.log(err);
           }
-    
         }
       }
       console.log(listAttribute);
@@ -212,24 +213,24 @@ exports.insertService = async (req, res) => {
         });
       });
     } else {
-      var listAttribute = []
+      var listAttribute = [];
       if (attributeList.length != 0) {
         for (let index = 0; index < attributeList.length; index++) {
           try {
-            var objAttribute = JSON.parse(attributeList[index])
-            console.log("name :" + objAttribute.name)
-            console.log("price :" + objAttribute.price)
+            var objAttribute = JSON.parse(attributeList[index]);
+
+            console.log("name :" + objAttribute.name);
+            console.log("price :" + objAttribute.price);
             const insertAttribute = new AttributeModel({
               name: objAttribute.name,
-              price: objAttribute.price
-            })
+              price: objAttribute.price,
+            });
             await insertAttribute.save().then((newAttribute) => {
-              listAttribute.push(newAttribute._id)
-            })
+              listAttribute.push(newAttribute._id);
+            });
           } catch (err) {
-            console.log(err)
+            console.log(err);
           }
-    
         }
       }
       console.log(listAttribute);
@@ -262,7 +263,8 @@ exports.insertService = async (req, res) => {
 exports.searchServiceByName = async (req, res) => {
   const nameSearch = req.query.name;
   try {
-    const listService = await ServiceModel.find().populate("idCategory")
+    const listService = await ServiceModel.find()
+      .populate("idCategory")
       .populate("attributeList")
       .populate("idSale")
       .populate("idStore")
@@ -279,7 +281,7 @@ exports.searchServiceByName = async (req, res) => {
           path: "idUser",
           model: "UserModel",
         },
-      });;
+      });
     const listSearch = listService.filter((item) =>
       item.name.toLowerCase().includes(nameSearch.toLowerCase())
     );
@@ -305,13 +307,22 @@ exports.updateService = async (req, res) => {
       valueSale,
     } = req.body;
     console.log(req.body);
+
     const service = await ServiceModel.findOne({ _id: idService });
-    const sale = await SaleModel.findOne({ _id: service.idSale });
-    var listAttributePost=[]
+    let sale;
+    if (service.idSale != null || service.idSale != undefined) {
+      sale = await SaleModel.findOne({ _id: service.idSale });
+    } else {
+      sale = sale;
+    }
+    var listAttributePost = [];
     if (attributeList.length > 0) {
       for (let i = 0; i < attributeList.length; i++) {
-        var objAttribute = JSON.parse(attributeList[index])
-        if(i==service.attributeList.length){
+        var objAttribute = JSON.parse(attributeList[i]);
+
+        // var objAttribute = attributeList[i];
+
+        if (i == service.attributeList.length) {
           const insertAttribute = new AttributeModel({
             name: objAttribute.name,
             price: objAttribute.price,
@@ -319,10 +330,11 @@ exports.updateService = async (req, res) => {
           await insertAttribute.save().then((newObj) => {
             listAttributePost.push(newObj._id);
           });
-        }
-        else{
+        } else {
           console.log("list id: " + i + ":" + service.attributeList[i]);
-          const attributeObj = await AttributeModel.findOne({ _id: service.attributeList[i] });
+          const attributeObj = await AttributeModel.findOne({
+            _id: service.attributeList[i],
+          });
           console.log(attributeObj);
           if (attributeObj.name !== objAttribute.name) {
             console.log(objAttribute);
@@ -337,7 +349,6 @@ exports.updateService = async (req, res) => {
             listAttributePost.push(service.attributeList[i]._id);
           }
         }
-        
       }
     }
     if (
@@ -463,7 +474,8 @@ exports.updateService = async (req, res) => {
 exports.getServiecById = async (req, res) => {
   const idService = req.params.idService;
   try {
-    const objService = await ServiceModel.findOne({ _id: idService }).populate("idCategory")
+    const objService = await ServiceModel.findOne({ _id: idService })
+      .populate("idCategory")
       .populate("attributeList")
       .populate("idSale")
       .populate("idStore")
@@ -482,8 +494,8 @@ exports.getServiecById = async (req, res) => {
         },
       });
 
-    res.status(200).json(objService)
+    res.status(200).json(objService);
   } catch (error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
-}
+};
