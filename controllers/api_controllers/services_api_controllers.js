@@ -157,7 +157,8 @@ exports.insertService = async (req, res) => {
       valueSale,
     } = req.body;
     console.log(attributeList)
-   
+    console.log(JSON.parse(attributeList[0]))
+  
     if (
       unitSale != undefined ||
       unitSale != null ||
@@ -172,11 +173,12 @@ exports.insertService = async (req, res) => {
       if (attributeList.length != 0) {
         for (let index = 0; index < attributeList.length; index++) {
           try {
-            console.log("name :" + attributeList[index].name)
-            console.log("price :" + attributeList[index].price)
+            var objAttribute = JSON.parse(attributeList[index])
+            console.log("name :" + objAttribute.name)
+            console.log("price :" + objAttribute.price)
             const insertAttribute = new AttributeModel({
-              name: attributeList[index].name,
-              price: attributeList[index].price
+              name: objAttribute.name,
+              price: objAttribute.price
             })
             await insertAttribute.save().then((newAttribute) => {
               listAttribute.push(newAttribute._id)
@@ -214,11 +216,12 @@ exports.insertService = async (req, res) => {
       if (attributeList.length != 0) {
         for (let index = 0; index < attributeList.length; index++) {
           try {
-            console.log("name :" + attributeList[index].name)
-            console.log("price :" + attributeList[index].price)
+            var objAttribute = JSON.parse(attributeList[index])
+            console.log("name :" + objAttribute.name)
+            console.log("price :" + objAttribute.price)
             const insertAttribute = new AttributeModel({
-              name: attributeList[index].name,
-              price: attributeList[index].price
+              name: objAttribute.name,
+              price: objAttribute.price
             })
             await insertAttribute.save().then((newAttribute) => {
               listAttribute.push(newAttribute._id)
@@ -307,10 +310,11 @@ exports.updateService = async (req, res) => {
     var listAttributePost=[]
     if (attributeList.length > 0) {
       for (let i = 0; i < attributeList.length; i++) {
+        var objAttribute = JSON.parse(attributeList[index])
         if(i==service.attributeList.length){
           const insertAttribute = new AttributeModel({
-            name: attributeList[i].name,
-            price: attributeList[i].price,
+            name: objAttribute.name,
+            price: objAttribute.price,
           });
           await insertAttribute.save().then((newObj) => {
             listAttributePost.push(newObj._id);
@@ -320,11 +324,11 @@ exports.updateService = async (req, res) => {
           console.log("list id: " + i + ":" + service.attributeList[i]);
           const attributeObj = await AttributeModel.findOne({ _id: service.attributeList[i] });
           console.log(attributeObj);
-          if (attributeObj.name !== attributeList[i].name) {
-            console.log(attributeList[i]);
+          if (attributeObj.name !== objAttribute.name) {
+            console.log(objAttribute);
             const insertAttribute = new AttributeModel({
-              name: attributeList[i].name,
-              price: attributeList[i].price,
+              name: objAttribute.name,
+              price: objAttribute.price,
             });
             await insertAttribute.save().then((newObj) => {
               listAttributePost.push(newObj._id);
