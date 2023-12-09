@@ -1,5 +1,6 @@
 const ServiceModel = require("../../models/services_model");
 const SaleModel = require("../../models/sale_model");
+const AttributeModel = require("../../models/attribute_model")
 
 exports.getListService = async (req, res) => {
   try {
@@ -130,7 +131,7 @@ exports.getServiceByIdCategory = async (req, res) => {
           uniqueService.name.toLowerCase() === service.name.toLowerCase()
       );
 
-      if(!exist){
+      if (!exist) {
         uniqueServices.push(service)
       }
     });
@@ -155,7 +156,8 @@ exports.insertService = async (req, res) => {
       unitSale,
       valueSale,
     } = req.body;
-
+    console.log(attributeList)
+   
     if (
       unitSale != undefined ||
       unitSale != null ||
@@ -166,11 +168,30 @@ exports.insertService = async (req, res) => {
         value: valueSale,
         unit: unitSale,
       });
-
+      var listAttribute = []
+      if (attributeList.length != 0) {
+        for (let index = 0; index < attributeList.length; index++) {
+          try {
+            console.log("name :" + attributeList[index].name)
+            console.log("price :" + attributeList[index].price)
+            const insertAttribute = new AttributeModel({
+              name: attributeList[index].name,
+              price: attributeList[index].price
+            })
+            await insertAttribute.save().then((newAttribute) => {
+              listAttribute.push(newAttribute._id)
+            })
+          } catch (err) {
+            console.log(err)
+          }
+    
+        }
+      }
+      console.log(listAttribute);
       newSale.save().then((newSale) => {
         const newService = new ServiceModel({
           name: name,
-          attributeList: attributeList,
+          attributeList: listAttribute,
           price: price,
           image:
             req.file == null || req.file == undefined
@@ -189,9 +210,29 @@ exports.insertService = async (req, res) => {
         });
       });
     } else {
+      var listAttribute = []
+      if (attributeList.length != 0) {
+        for (let index = 0; index < attributeList.length; index++) {
+          try {
+            console.log("name :" + attributeList[index].name)
+            console.log("price :" + attributeList[index].price)
+            const insertAttribute = new AttributeModel({
+              name: attributeList[index].name,
+              price: attributeList[index].price
+            })
+            await insertAttribute.save().then((newAttribute) => {
+              listAttribute.push(newAttribute._id)
+            })
+          } catch (err) {
+            console.log(err)
+          }
+    
+        }
+      }
+      console.log(listAttribute);
       const newService = new ServiceModel({
         name: name,
-        attributeList: attributeList,
+        attributeList: listAttribute,
         price: price,
         image:
           req.file == null || req.file == undefined
@@ -219,23 +260,23 @@ exports.searchServiceByName = async (req, res) => {
   const nameSearch = req.query.name;
   try {
     const listService = await ServiceModel.find().populate("idCategory")
-    .populate("attributeList")
-    .populate("idSale")
-    .populate("idStore")
-    .populate({
-      path: "idStore",
-      populate: {
-        path: "idAddress",
-        model: "AddressModel",
-      },
-    })
-    .populate({
-      path: "idStore",
-      populate: {
-        path: "idUser",
-        model: "UserModel",
-      },
-    });;
+      .populate("attributeList")
+      .populate("idSale")
+      .populate("idStore")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      });;
     const listSearch = listService.filter((item) =>
       item.name.toLowerCase().includes(nameSearch.toLowerCase())
     );
@@ -260,10 +301,41 @@ exports.updateService = async (req, res) => {
       unitSale,
       valueSale,
     } = req.body;
-
+    console.log(req.body);
     const service = await ServiceModel.findOne({ _id: idService });
     const sale = await SaleModel.findOne({ _id: service.idSale });
-
+    var listAttributePost=[]
+    if (attributeList.length > 0) {
+      for (let i = 0; i < attributeList.length; i++) {
+        if(i==service.attributeList.length){
+          const insertAttribute = new AttributeModel({
+            name: attributeList[i].name,
+            price: attributeList[i].price,
+          });
+          await insertAttribute.save().then((newObj) => {
+            listAttributePost.push(newObj._id);
+          });
+        }
+        else{
+          console.log("list id: " + i + ":" + service.attributeList[i]);
+          const attributeObj = await AttributeModel.findOne({ _id: service.attributeList[i] });
+          console.log(attributeObj);
+          if (attributeObj.name !== attributeList[i].name) {
+            console.log(attributeList[i]);
+            const insertAttribute = new AttributeModel({
+              name: attributeList[i].name,
+              price: attributeList[i].price,
+            });
+            await insertAttribute.save().then((newObj) => {
+              listAttributePost.push(newObj._id);
+            });
+          } else {
+            listAttributePost.push(service.attributeList[i]._id);
+          }
+        }
+        
+      }
+    }
     if (
       unitSale != undefined ||
       unitSale != null ||
@@ -283,7 +355,7 @@ exports.updateService = async (req, res) => {
               name: name != null || name != undefined ? name : service.name,
               attributeList:
                 attributeList != null || attributeList != undefined
-                  ? attributeList
+                  ? listAttributePost
                   : service.attributeList,
               price:
                 price != null || price != undefined ? price : service.price,
@@ -319,7 +391,7 @@ exports.updateService = async (req, res) => {
             name: name != null || name != undefined ? name : service.name,
             attributeList:
               attributeList != null || attributeList != undefined
-                ? attributeList
+                ? listAttributePost
                 : service.attributeList,
             price: price != null || price != undefined ? price : service.price,
             image:
@@ -354,7 +426,7 @@ exports.updateService = async (req, res) => {
           name: name != null || name != undefined ? name : service.name,
           attributeList:
             attributeList != null || attributeList != undefined
-              ? attributeList
+              ? listAttributePost
               : service.attributeList,
           price: price != null || price != undefined ? price : service.price,
           image:
@@ -384,30 +456,30 @@ exports.updateService = async (req, res) => {
   }
 };
 
-exports.getServiecById = async (req,res)=>{
-    const idService = req.params.idService;
-    try {
-        const objService = await ServiceModel.findOne({_id:idService}).populate("idCategory")
-        .populate("attributeList")
-        .populate("idSale")
-        .populate("idStore")
-        .populate({
-          path: "idStore",
-          populate: {
-            path: "idAddress",
-            model: "AddressModel",
-          },
-        })
-        .populate({
-          path: "idStore",
-          populate: {
-            path: "idUser",
-            model: "UserModel",
-          },
-        });
-  
-        res.status(200).json(objService)
-    } catch (error) {
-        res.status(500).json(error)
-    }
+exports.getServiecById = async (req, res) => {
+  const idService = req.params.idService;
+  try {
+    const objService = await ServiceModel.findOne({ _id: idService }).populate("idCategory")
+      .populate("attributeList")
+      .populate("idSale")
+      .populate("idStore")
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idAddress",
+          model: "AddressModel",
+        },
+      })
+      .populate({
+        path: "idStore",
+        populate: {
+          path: "idUser",
+          model: "UserModel",
+        },
+      });
+
+    res.status(200).json(objService)
+  } catch (error) {
+    res.status(500).json(error)
+  }
 }
