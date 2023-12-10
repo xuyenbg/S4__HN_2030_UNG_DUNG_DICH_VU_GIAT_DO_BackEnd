@@ -2,11 +2,20 @@ const OrderModel = require("../models/order_model");
 
 const moment = require("moment");
 
+function formatNumberWithCommas(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
 exports.getListOrderModel = async (req, res) => {
   try {
     const listOrder = await OrderModel.find({ status: { $in: [3, 4] } })
       .populate("idUser")
       .populate("idStore");
+    var totalOrder = 0;
+    for (let index = 0; index < listOrder.length; index++) {
+      totalOrder += listOrder[index].total;
+    }
+
     const listMerge = new Set(listOrder.map((item) => item["idStore"]));
     var list = [];
 
@@ -31,11 +40,32 @@ exports.getListOrderModel = async (req, res) => {
 
     res.render("table/table_tong_doanh_thu_cua_hang", {
       listOrder: list,
+      totalOrder:formatNumberWithCommas(totalOrder)
     });
   } catch (err) {
     res.status(500).send("Có lỗi xảy ra");
   }
 };
+
+function formatDate(dateString) {
+  var dateObject = new Date(dateString);
+
+  var day = dateObject.getDate();
+  var month = dateObject.getMonth() + 1; // Tháng bắt đầu từ 0
+  var year = dateObject.getFullYear();
+
+  // Chuyển định dạng thành "dd/mm/yyyy"
+  var formattedDate =
+    (day < 10 ? "0" : "") +
+    day +
+    "/" +
+    (month < 10 ? "0" : "") +
+    month +
+    "/" +
+    year;
+
+  return formattedDate;
+}
 
 exports.getlistOrderByDate = async (req, res) => {
   const listOrderByDate = await OrderModel.find({ status: { $in: [3, 4] } })
@@ -54,9 +84,13 @@ exports.getlistOrderByDate = async (req, res) => {
     }
   }
 
-  const currentDateFormat = moment().format("DD-MM-YYYY")
+  const currentDateFormat = moment().format("DD-MM-YYYY");
 
-  res.render("table/table_tong_don_hang_theo_ngay", { list: list,currentDate:currentDateFormat});
+  res.render("table/table_tong_don_hang_theo_ngay", {
+    list: list,
+    currentDate: currentDateFormat,
+    formatDate:formatDate
+  });
 };
 
 exports.getlistOrderByWeek = async (req, res) => {
@@ -78,14 +112,19 @@ exports.getlistOrderByWeek = async (req, res) => {
   })
     .populate("idUser")
     .populate("idStore");
-
-  res.render("table/table_tong_don_hang_theo_tuan", { list: listOrdersByWeek });
+  console.log(formatDate(daysOfWeekFormatted[0])+"?"+daysOfWeekFormatted[6]);
+  res.render("table/table_tong_don_hang_theo_tuan", { list: listOrdersByWeek ,formatDate:formatDate,weekstart:formatDate(daysOfWeekFormatted[0]),weekend:formatDate(daysOfWeekFormatted[6])});
 };
 
 exports.getListTotalOrder = async (req, res) => {
   const listTotalOrder = await OrderModel.find()
     .populate("idUser")
     .populate("idStore");
+  listTotalOrder.forEach((item) => {
+    if (item.idUser == null) {
+      console.log(item);
+    }
+  });
   res.render("table/table_tong_don_hang", { list: listTotalOrder });
 };
 
@@ -116,9 +155,12 @@ exports.getlistOrderByMonth = async (req, res) => {
     .populate("idUser")
     .populate("idStore");
 
-    const date = new Date();
-    const month = date.getMonth()+1
-  res.render("table/table_tong_don_hang_thang", { list: listOrdersByMonth,month:month });
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  res.render("table/table_tong_don_hang_thang", {
+    list: listOrdersByMonth,
+    month: month,
+  });
 };
 
 exports.getlistOrderByYear = async (req, res) => {
@@ -139,5 +181,8 @@ exports.getlistOrderByYear = async (req, res) => {
     .populate("idStore");
   const date = new Date();
   const year = date.getFullYear();
-  res.render("table/table_tong_dong_hang_nam", { list: listOrdersByYear ,year:year});
+  res.render("table/table_tong_dong_hang_nam", {
+    list: listOrdersByYear,
+    year: year,
+  });
 };
