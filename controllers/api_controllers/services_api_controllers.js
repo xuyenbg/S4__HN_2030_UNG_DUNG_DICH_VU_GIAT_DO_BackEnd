@@ -170,23 +170,24 @@ exports.insertService = async (req, res) => {
         unit: unitSale,
       });
       var listAttribute = [];
-      if (attributeList.length != 0) {
-        for (let index = 0; index < attributeList.length; index++) {
-          try {
-            var objAttribute = JSON.parse(attributeList[index])
-            // var objAttribute = attributeList[index];
+      if (attributeList != null || attributeList != undefined) {
+        if (attributeList.length != 0) {
+          for (let index = 0; index < attributeList.length; index++) {
+            try {
+              var objAttribute = JSON.parse(attributeList[index]);
 
-            console.log("name :" + objAttribute.name);
-            console.log("price :" + objAttribute.price);
-            const insertAttribute = new AttributeModel({
-              name: objAttribute.name,
-              price: objAttribute.price,
-            });
-            await insertAttribute.save().then((newAttribute) => {
-              listAttribute.push(newAttribute._id);
-            });
-          } catch (err) {
-            console.log(err);
+              console.log("name :" + objAttribute.name);
+              console.log("price :" + objAttribute.price);
+              const insertAttribute = new AttributeModel({
+                name: objAttribute.name,
+                price: objAttribute.price,
+              });
+              await insertAttribute.save().then((newAttribute) => {
+                listAttribute.push(newAttribute._id);
+              });
+            } catch (err) {
+              console.log(err);
+            }
           }
         }
       }
@@ -214,25 +215,28 @@ exports.insertService = async (req, res) => {
       });
     } else {
       var listAttribute = [];
-      if (attributeList.length != 0) {
-        for (let index = 0; index < attributeList.length; index++) {
-          try {
-            var objAttribute = JSON.parse(attributeList[index]);
-
-            console.log("name :" + objAttribute.name);
-            console.log("price :" + objAttribute.price);
-            const insertAttribute = new AttributeModel({
-              name: objAttribute.name,
-              price: objAttribute.price,
-            });
-            await insertAttribute.save().then((newAttribute) => {
-              listAttribute.push(newAttribute._id);
-            });
-          } catch (err) {
-            console.log(err);
+      if (attributeList != null || attributeList != undefined) {
+        if (attributeList.length != 0) {
+          for (let index = 0; index < attributeList.length; index++) {
+            try {
+              var objAttribute = JSON.parse(attributeList[index]);
+  
+              console.log("name :" + objAttribute.name);
+              console.log("price :" + objAttribute.price);
+              const insertAttribute = new AttributeModel({
+                name: objAttribute.name,
+                price: objAttribute.price,
+              });
+              await insertAttribute.save().then((newAttribute) => {
+                listAttribute.push(newAttribute._id);
+              });
+            } catch (err) {
+              console.log(err);
+            }
           }
         }
       }
+      
       console.log(listAttribute);
       const newService = new ServiceModel({
         name: name,
@@ -316,28 +320,14 @@ exports.updateService = async (req, res) => {
       sale = sale;
     }
     var listAttributePost = [];
-    if (attributeList.length > 0) {
-      for (let i = 0; i < attributeList.length; i++) {
-        var objAttribute = JSON.parse(attributeList[i]);
+    if (attributeList != null || attributeList != undefined) {
+      if (attributeList.length > 0) {
+        for (let i = 0; i < attributeList.length; i++) {
+          var objAttribute = JSON.parse(attributeList[i]);
 
-        // var objAttribute = attributeList[i];
+          // var objAttribute = attributeList[i];
 
-        if (i == service.attributeList.length) {
-          const insertAttribute = new AttributeModel({
-            name: objAttribute.name,
-            price: objAttribute.price,
-          });
-          await insertAttribute.save().then((newObj) => {
-            listAttributePost.push(newObj._id);
-          });
-        } else {
-          console.log("list id: " + i + ":" + service.attributeList[i]);
-          const attributeObj = await AttributeModel.findOne({
-            _id: service.attributeList[i],
-          });
-          console.log(attributeObj);
-          if (attributeObj.name !== objAttribute.name) {
-            console.log(objAttribute);
+          if (i == service.attributeList.length) {
             const insertAttribute = new AttributeModel({
               name: objAttribute.name,
               price: objAttribute.price,
@@ -346,11 +336,28 @@ exports.updateService = async (req, res) => {
               listAttributePost.push(newObj._id);
             });
           } else {
-            listAttributePost.push(service.attributeList[i]._id);
+            console.log("list id: " + i + ":" + service.attributeList[i]);
+            const attributeObj = await AttributeModel.findOne({
+              _id: service.attributeList[i],
+            });
+            console.log(attributeObj);
+            if (attributeObj.name !== objAttribute.name) {
+              console.log(objAttribute);
+              const insertAttribute = new AttributeModel({
+                name: objAttribute.name,
+                price: objAttribute.price,
+              });
+              await insertAttribute.save().then((newObj) => {
+                listAttributePost.push(newObj._id);
+              });
+            } else {
+              listAttributePost.push(service.attributeList[i]._id);
+            }
           }
         }
       }
     }
+
     if (
       unitSale != undefined ||
       unitSale != null ||
