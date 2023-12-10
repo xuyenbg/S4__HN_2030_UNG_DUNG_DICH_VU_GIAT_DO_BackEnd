@@ -3,6 +3,10 @@ const OrderModel = require("../models/order_model");
 const UserModel = require("../models/users_model");
 const moment = require("moment");
 
+function formatNumberWithCommas(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
 const getTotalByMonth = async (month) => {
   // Lấy ngày bắt đầu của tháng 1
   const startDate = moment()
@@ -187,6 +191,22 @@ listOrdersByYear.forEach((item)=>{
    const sortListStore = listStoreTop.sort((a,b)=>b.total-a.total);
    const sortListStoreTop = sortListStore.slice(0,5);
 
+   const store1 = sortListStoreTop[0] != undefined ? sortListStoreTop[0].idStore.name : "";
+   const store2 = sortListStoreTop[1] != undefined ? sortListStoreTop[1].idStore.name : "";
+   const store3 = sortListStoreTop[2] != undefined ? sortListStoreTop[2].idStore.name : "";
+   const store4 = sortListStoreTop[3] != undefined ? sortListStoreTop[3].idStore.name : "";
+   const store5 = sortListStoreTop[4] != undefined ? sortListStoreTop[4].idStore.name : "";
+   
+   const totalStore1 = sortListStoreTop[0] != undefined ? sortListStoreTop[0].total : 0;
+   const totalStore2 = sortListStoreTop[1] != undefined ? sortListStoreTop[1].total : 0;
+   const totalStore3 = sortListStoreTop[2] != undefined ? sortListStoreTop[2].total : 0;
+   const totalStore4 = sortListStoreTop[3] != undefined ? sortListStoreTop[3].total : 0;
+   const totalStore5 = sortListStoreTop[4] != undefined ? sortListStoreTop[4].total : 0;
+
+   
+
+
+
 
    //Thongke ngay tuan thang nam
 
@@ -195,7 +215,7 @@ listOrdersByYear.forEach((item)=>{
 
   return res.render("home", {
     count: listStore.length,
-    totalOrder: totalOrder,
+    totalOrder: `${formatNumberWithCommas(totalOrder)} vnđ`,
     listOrder: listTotalOrder.length,
     percentListOrderCancel: percentListOrderCancel,
     numberOrderCancel: listOrderCancel.length,
@@ -228,9 +248,19 @@ listOrdersByYear.forEach((item)=>{
     countOrderByMonth12: listOrderByMonth12,
     totalByMonth12: totalByMonth12,
     sortListStoreTop:sortListStoreTop,
-    totalCurrentDate:totalCurrentDate,
-    totalByWeek:totalByWeek,
-    totalByMonth:totalByMonth,
-    totalByYear:totalByYear
+    totalCurrentDate:`${formatNumberWithCommas(totalCurrentDate)} vnđ`,
+    totalByWeek:`${formatNumberWithCommas(totalByWeek)} vnđ`,
+    totalByMonth:`${formatNumberWithCommas(totalByMonth)} vnđ`,
+    totalByYear:`${formatNumberWithCommas(totalByYear)} vnđ`,
+    store1:store1,
+    store2:store2,
+    store3:store3,
+    store4:store4,
+    store5:store5,
+    totalStore1:totalStore1,
+    totalStore2:totalStore2,
+    totalStore3:totalStore3,
+    totalStore4:totalStore4,
+    totalStore5:totalStore5
   });
 };

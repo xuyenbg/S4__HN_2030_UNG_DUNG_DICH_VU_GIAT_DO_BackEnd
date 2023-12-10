@@ -64,13 +64,13 @@
         </li>
 
         <!-- Divider -->
-        <hr class="sidebar-divider" />
+        <!-- <hr class="sidebar-divider" /> -->
 
         <!-- Heading -->
-        <div class="sidebar-heading">Interface</div>
+        <!-- <div class="sidebar-heading">Interface</div> -->
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a
             class="nav-link collapsed"
             href="#"
@@ -94,10 +94,10 @@
               <a class="collapse-item" href="cards.html">Cards</a>
             </div>
           </div>
-        </li>
+        </li> -->
 
         <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a
             class="nav-link collapsed"
             href="#"
@@ -125,16 +125,16 @@
               <a class="collapse-item" href="utilities-other.html">Other</a>
             </div>
           </div>
-        </li>
+        </li> -->
 
         <!-- Divider -->
         <hr class="sidebar-divider" />
 
         <!-- Heading -->
-        <div class="sidebar-heading">Addons</div>
+        <!-- <div class="sidebar-heading">Addons</div> -->
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a
             class="nav-link collapsed"
             href="#"
@@ -165,7 +165,7 @@
               <a class="collapse-item" href="blank.html">Blank Page</a>
             </div>
           </div>
-        </li>
+        </li> -->
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
@@ -494,11 +494,12 @@
           <!-- Begin Page Content -->
           <div class="container-fluid">
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Danh sách đơn hàng ngày <%=currentDate%></h1>
-          
+            <h1 class="h3 mb-2 text-gray-800">
+              Danh sách đơn hàng ngày <%=currentDate%>
+            </h1>
+
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
-             
               <div class="card-body">
                 <div class="table-responsive">
                   <table
@@ -513,7 +514,7 @@
                         <!-- <th>Id khách hàng</th> -->
                         <th>Tên khách hàng</th>
                         <th>Giá trị đơn hàng</th>
-                        
+                        <th>Thời gian đặt</th>
                       </tr>
                     </thead>
                     <tfoot>
@@ -522,7 +523,7 @@
                         <!-- <th>Id khách hàng</th> -->
                         <th>Tên khách hàng</th>
                         <th>Giá trị đơn hàng</th>
-                        
+                        <th>Thời gian đặt</th>
                       </tr>
                     </tfoot>
                     <tbody>
@@ -532,7 +533,7 @@
                         <!-- <td><%=element.idUser._id%></td> -->
                         <td><%=element.idUser.fullname%></td>
                         <td><%=element.total%>đ</td>
-                        
+                        <td><%=formatDate(element.createAt)%></td>
                       </tr>
                       <% }) %>
                     </tbody>
