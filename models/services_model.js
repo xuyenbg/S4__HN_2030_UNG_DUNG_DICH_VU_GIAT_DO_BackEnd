@@ -14,7 +14,7 @@ const ServiceSchema = new db.Schema(
         attributeList: [
             {
                 type: db.Schema.Types.ObjectId,
-                required: true,
+                required: false,
                 ref: "AttributeModel",
             },
         ],
