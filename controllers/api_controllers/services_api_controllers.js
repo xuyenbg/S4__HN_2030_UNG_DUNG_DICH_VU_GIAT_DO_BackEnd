@@ -364,7 +364,83 @@ exports.updateService = async (req, res) => {
       valueSale != undefined ||
       valueSale != null
     ) {
-      if (unitSale != sale.unit || valueSale != sale.value) {
+      if(sale!=null){
+        if (unitSale != sale.unit || valueSale != sale.value) {
+          const newSale = new SaleModel({
+            value: valueSale,
+            unit: unitSale,
+          });
+  
+          newSale.save().then(async (newSale) => {
+            await ServiceModel.findByIdAndUpdate(
+              { _id: idService },
+              {
+                name: name != null || name != undefined ? name : service.name,
+                attributeList:
+                  attributeList != null || attributeList != undefined
+                    ? listAttributePost
+                    : service.attributeList,
+                price:
+                  price != null || price != undefined ? price : service.price,
+                image:
+                  req.file == null || req.file == undefined
+                    ? service.image
+                    : `/img/${req.file.filename}`,
+                isActive:
+                  isActive != null || isActive != undefined
+                    ? isActive
+                    : service.isActive,
+                unit: unit != null || unit != undefined ? unit : service.unit,
+                idCategory:
+                  idCategory != null || idCategory != undefined
+                    ? idCategory
+                    : service.idCategory,
+                idSale: newSale._id,
+                idStore:
+                  idStore != null || idStore != undefined
+                    ? idStore
+                    : service.idStore,
+              }
+            ).then((_) => {
+              res.send("Cập nhật dịch vụ thành công");
+            });
+          });
+        } else {
+          await ServiceModel.findByIdAndUpdate(
+            {
+              _id: idService,
+            },
+            {
+              name: name != null || name != undefined ? name : service.name,
+              attributeList:
+                attributeList != null || attributeList != undefined
+                  ? listAttributePost
+                  : service.attributeList,
+              price: price != null || price != undefined ? price : service.price,
+              image:
+                req.file == null || req.file == undefined
+                  ? service.image
+                  : `/img/${req.file.filename}`,
+              isActive:
+                isActive != null || isActive != undefined
+                  ? isActive
+                  : service.isActive,
+              unit: unit != null || unit != undefined ? unit : service.unit,
+              idCategory:
+                idCategory != null || idCategory != undefined
+                  ? idCategory
+                  : service.idCategory,
+              idSale: service.idSale,
+              idStore:
+                idStore != null || idStore != undefined
+                  ? idStore
+                  : service.idStore,
+            }
+          ).then((_) => {
+            res.send("Cập nhật dịch vụ thành công");
+          });
+        }
+      }else{
         const newSale = new SaleModel({
           value: valueSale,
           unit: unitSale,
@@ -404,42 +480,11 @@ exports.updateService = async (req, res) => {
             res.send("Cập nhật dịch vụ thành công");
           });
         });
-      } else {
-        await ServiceModel.findByIdAndUpdate(
-          {
-            _id: idService,
-          },
-          {
-            name: name != null || name != undefined ? name : service.name,
-            attributeList:
-              attributeList != null || attributeList != undefined
-                ? listAttributePost
-                : service.attributeList,
-            price: price != null || price != undefined ? price : service.price,
-            image:
-              req.file == null || req.file == undefined
-                ? service.image
-                : `/img/${req.file.filename}`,
-            isActive:
-              isActive != null || isActive != undefined
-                ? isActive
-                : service.isActive,
-            unit: unit != null || unit != undefined ? unit : service.unit,
-            idCategory:
-              idCategory != null || idCategory != undefined
-                ? idCategory
-                : service.idCategory,
-            idSale: service.idSale,
-            idStore:
-              idStore != null || idStore != undefined
-                ? idStore
-                : service.idStore,
-          }
-        ).then((_) => {
-          res.send("Cập nhật dịch vụ thành công");
-        });
-      }
+      } 
+
+   
     } else {
+      await ServiceModel.deleteOne({_id: service.idSale})
       await ServiceModel.findByIdAndUpdate(
         {
           _id: idService,
@@ -464,7 +509,7 @@ exports.updateService = async (req, res) => {
             idCategory != null || idCategory != undefined
               ? idCategory
               : service.idCategory,
-          idSale: service.idSale,
+          idSale: null,
           idStore:
             idStore != null || idStore != undefined ? idStore : service.idStore,
         }
