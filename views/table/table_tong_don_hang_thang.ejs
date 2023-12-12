@@ -494,11 +494,42 @@
           <!-- Begin Page Content -->
           <div class="container-fluid">
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Danh sách đơn hàng tháng <%=month%></h1>
-          
+            <h1 class="h3 mb-2 text-gray-800">
+              Doanh thu theo tháng <%=month%>
+            </h1>
+
+            <h1 style="color: red; margin-top: 10px; margin-bottom: 10px">
+              <%=totalOrder%> vnđ
+            </h1>
+
+            <form class="row g-3" method="get">
+              <div class="col-auto">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="inputPassword2"
+                  placeholder="Nhập vào tháng"
+                  name="month"
+                />
+              </div>
+              <div class="col-auto">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="inputPassword2"
+                  
+                  placeholder="Nhập vào năm"
+                  name="year"
+                />
+              </div>
+
+              <button type="submit" class="btn btn-primary col-auto mb-3">
+                Lọc
+              </button>
+            </form>
+
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
-             
               <div class="card-body">
                 <div class="table-responsive">
                   <table
@@ -513,7 +544,7 @@
                         <!-- <th>Id khách hàng</th> -->
                         <th>Tên khách hàng</th>
                         <th>Giá trị đơn hàng</th>
-                        
+                        <th>Ngày đặt</th>
                       </tr>
                     </thead>
                     <tfoot>
@@ -522,7 +553,8 @@
                         <!-- <th>Id khách hàng</th> -->
                         <th>Tên khách hàng</th>
                         <th>Giá trị đơn hàng</th>
-                        
+                        <th>Ngày đặt</th>
+
                       </tr>
                     </tfoot>
                     <tbody>
@@ -532,7 +564,7 @@
                         <!-- <td><%=element.idUser._id%></td> -->
                         <td><%=element.idUser.fullname%></td>
                         <td><%=element.total%>đ</td>
-                        
+                        <td><%=formatDate(element.createAt)%></td>
                       </tr>
                       <% }) %>
                     </tbody>

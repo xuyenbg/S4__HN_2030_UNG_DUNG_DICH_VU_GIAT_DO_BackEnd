@@ -346,8 +346,20 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Danh sách đơn hàng theo tuần <%=weekstart%> - <%=weekend%></h1>
+          <h1 class="h3 mb-2 text-gray-800">Tổng doanh thu theo tuần <%=weekstart%> - <%=weekend%></h1>
+          <h1 style="color: red;margin-top: 10px;margin-bottom: 10px;"><%=totalOrder%> vnđ</h1>
+          <form class="row g-3" method="get">
 
+            <div class="col-auto">
+                <input type="" class="form-control" id="inputPassword2" placeholder="Nhập từ ngày" name="dayStart">
+            </div>
+            <div class="col-auto">
+              <input type="" class="form-control" id="inputPassword2" placeholder="Nhập đến ngày" name="dayEnd">
+          </div>
+
+            <button type="submit" class="btn btn-primary col-auto mb-3">Lọc</button>
+        </form>
+        <p style="color: red;"><%=msg%></p>
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
 
