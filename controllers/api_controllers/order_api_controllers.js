@@ -200,6 +200,8 @@ exports.updateStatusOrder = async (req, res) => {
       return;
     }
 
+    const order = await OrderModel.findOne({ _id: idOrder });
+
     await OrderModel.findByIdAndUpdate(
       { _id: idOrder },
       {
@@ -210,7 +212,7 @@ exports.updateStatusOrder = async (req, res) => {
       sendNotification(
         "Thông báo đơn hàng",
         "Trạng thái của đơn hàng đã được cập nhật",
-        idUser,
+        order.idUser.toString(),
         idOrder
       );
 
