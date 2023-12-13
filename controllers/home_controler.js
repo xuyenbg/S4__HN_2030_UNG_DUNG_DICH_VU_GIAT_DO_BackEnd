@@ -208,10 +208,7 @@ listOrdersByYear.forEach((item)=>{
 
 
 
-   //Thongke ngay tuan thang nam
-
-   
-  
+   //Thongke ngay tuan thang nam  
 
   return res.render("home", {
     count: listStore.length,
@@ -247,7 +244,8 @@ listOrdersByYear.forEach((item)=>{
     totalByMonth11: totalByMonth11,
     countOrderByMonth12: listOrderByMonth12,
     totalByMonth12: totalByMonth12,
-    sortListStoreTop:sortListStoreTop,
+    sortListStoreTop:sortListStoreTop.length == 0 ? 0: sortListStoreTop[0].total,
+    sortListStoreTopOne:sortListStoreTop,
     totalCurrentDate:`${formatNumberWithCommas(totalCurrentDate)} vnđ`,
     totalByWeek:`${formatNumberWithCommas(totalByWeek)} vnđ`,
     totalByMonth:`${formatNumberWithCommas(totalByMonth)} vnđ`,

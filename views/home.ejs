@@ -829,7 +829,7 @@
                           </tr>
                         </tfoot>
                           <tbody>
-                            <% sortListStoreTop.forEach((element, index)=> { %>
+                            <% sortListStoreTopOne.forEach((element, index)=> { %>
                               <tr>
                                 <td><%=index+1%></td>
                                 <td><%=element.idStore.name%></td>
@@ -1180,7 +1180,7 @@ var myBarChart = new Chart(ctx, {
       yAxes: [{
         ticks: {
           min: 0,
-          max: <%=sortListStoreTop[0].total%>,
+          max: sortListStoreTop,
           maxTicksLimit: 5,
           padding: 10,
           // Include a dollar sign in the ticks
