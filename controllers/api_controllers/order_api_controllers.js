@@ -360,7 +360,14 @@ exports.getOrderDetail = async (req, res) => {
           path: "idAddress",
           model: "AddressModel",
         },
-      });
+      })
+      .populate({
+        path: 'listItem.idService',
+        populate: {
+            path: 'idSale',
+            model: 'SaleModel'
+        }
+    });
 
     res.status(200).json(listOrder);
   } catch (error) {
