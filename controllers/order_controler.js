@@ -147,9 +147,10 @@ exports.getlistOrderByWeek = async (req, res) => {
         const formattedDay = day.format("YYYY-MM-DD");
         daysOfWeekFormatted.push(formattedDay);
       }
+      console.log("Longmgmgm"+daysOfWeekFormatted);
 
       const listOrdersByWeek = await OrderModel.find({
-        createAt: { $gte: "2023-12-10", $lt: "2023-12-14" },
+        createAt: { $gte: daysOfWeekFormatted[0], $lt: daysOfWeekFormatted[6] },
         status: { $in: [3, 4] },
       })
         .populate("idUser")
