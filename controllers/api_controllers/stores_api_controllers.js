@@ -187,10 +187,7 @@ exports.updateStore = async (req, res) => {
         }
       ).then(async (_) => {
         const newStore = await StoreModel.findOne({ _id: idStore });
-        res.json({
-          message: "Cập nhật cửa hàng thành công",
-          store: newStore,
-        });
+        res.json(newStore);
       });
     }
   } catch (err) {
