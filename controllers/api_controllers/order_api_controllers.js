@@ -806,7 +806,7 @@ exports.thongKeTheoTuan = async (req, res) => {
     }
     console.log(danhSachNgayTrongTuan);
   
-    res.status(200).json({list: danhSachNgayTrongTuan});
+    res.status(200).json(danhSachNgayTrongTuan);
   } catch (error) {
     res.stutas(500).send("Có lỗi xảy ra")
   }
