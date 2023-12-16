@@ -14,6 +14,7 @@ const {
   getListOrderTodayByIdStore,
   getListOrderByDateAndStatus,
   getTotalByWeekMonth,
+  thongKeTheoTuan
 } = require("../../controllers/api_controllers/order_api_controllers");
 var router = express.Router();
 
@@ -43,5 +44,7 @@ router.get(
 router.get("/list-order-by-date-status/:idStore", getListOrderByDateAndStatus);
 router.get("/total-order-by-currentdate/:idStore", getTotalOrderByDay);
 router.get("/total-order-by-week-month/:idStore", getTotalByWeekMonth);
+
+router.get("/thong-ke-theo-tuan/:idStore",thongKeTheoTuan)
 
 module.exports = router;

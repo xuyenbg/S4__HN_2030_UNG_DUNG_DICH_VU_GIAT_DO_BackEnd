@@ -7,7 +7,7 @@ const checkLogin = require("../middleware/checkLogin");
 router.get('/list',checkLogin.reqLogin,getListOrderModel);
 router.get('/listTotalOrder',checkLogin.reqLogin,getListTotalOrder)
 router.get('/listOrderByDate',checkLogin.reqLogin,getlistOrderByDate)
-router.get('/listOrderByWeek',getlistOrderByWeek)
+router.get('/listOrderByWeek',checkLogin.reqLogin,getlistOrderByWeek)
 router.get('/listOrderByMonth',checkLogin.reqLogin,getlistOrderByMonth)
 router.get('/listOrderByYear',checkLogin.reqLogin,getlistOrderByYear)
 

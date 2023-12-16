@@ -142,7 +142,7 @@ exports.getlistOrderByWeek = async (req, res) => {
 
       const daysOfWeekFormatted = [];
 
-      for (let i = 0; i < 7; i++) {
+      for (let i = 1; i < 8; i++) {
         const day = firstDayOfWeek.clone().add(i, "days");
         const formattedDay = day.format("YYYY-MM-DD");
         daysOfWeekFormatted.push(formattedDay);

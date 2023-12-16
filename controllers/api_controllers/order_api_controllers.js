@@ -362,12 +362,12 @@ exports.getOrderDetail = async (req, res) => {
         },
       })
       .populate({
-        path: 'listItem.idService',
+        path: "listItem.idService",
         populate: {
-            path: 'idSale',
-            model: 'SaleModel'
-        }
-    });
+          path: "idSale",
+          model: "SaleModel",
+        },
+      });
 
     res.status(200).json(listOrder);
   } catch (error) {
@@ -765,4 +765,50 @@ exports.getTotalByWeekMonth = async (req, res) => {
     res.status(500).send("Có lỗi xảy ra");
     console.log(err);
   }
+};
+
+exports.thongKeTheoTuan = async (req, res) => {
+  try {
+    const current = moment();
+    const firstDayOfWeek = current.clone().startOf("week");
+  
+  
+    var danhSachNgayTrongTuan = [];
+    
+    for (let i = 1; i < 8; i++) {
+      const day = firstDayOfWeek.clone().add(i, "days");
+      const formattedDay = day.format("YYYY-MM-DD");
+      const listOrdersByWeek = await OrderModel.find({
+        idStore: req.params.idStore,
+        status: { $in: [3, 4] },
+      }) .populate("idUser")
+      .populate("idStore");
+      var listOrderByDay = []
+      listOrdersByWeek.forEach((item)=>{
+        const timestamp = new Date(item.createAt);
+        const year = timestamp.getUTCFullYear();
+        const month = timestamp.getUTCMonth() + 1;
+        const day = timestamp.getUTCDate();
+        const date = year + "-" + month + "-" + day;
+        if (date == formattedDay) {
+          listOrderByDay.push(item)
+        }
+      })
+      var total = 0;
+      listOrderByDay.forEach((item)=>total+=item.total)
+      
+      danhSachNgayTrongTuan.push({
+        date:formattedDay,
+        day:i === 7 ? "Chủ nhật":"Thứ "+(i+1),
+        total:total
+      })
+      listOrderByDay= []
+    }
+    console.log(danhSachNgayTrongTuan);
+  
+    res.status(200).json({list: danhSachNgayTrongTuan});
+  } catch (error) {
+    res.stutas(500).send("Có lỗi xảy ra")
+  }
+ 
 };

@@ -203,11 +203,6 @@ listOrdersByYear.forEach((item)=>{
    const totalStore4 = sortListStoreTop[3] != undefined ? sortListStoreTop[3].total : 0;
    const totalStore5 = sortListStoreTop[4] != undefined ? sortListStoreTop[4].total : 0;
 
-   
-
-
-
-
    //Thongke ngay tuan thang nam  
 
   return res.render("home", {
