@@ -163,7 +163,9 @@ exports.updateStore = async (req, res) => {
                 : store.image,
           }
         ).then(async (_) => {
-          const newStore = await StoreModel.findOne({ _id: idStore });
+          const newStore = await StoreModel.findOne({ _id: idStore })
+            .populate("idUser")
+            .populate("idAddress");
           res.json(newStore);
         });
       });
@@ -186,7 +188,9 @@ exports.updateStore = async (req, res) => {
               : store.image,
         }
       ).then(async (_) => {
-        const newStore = await StoreModel.findOne({ _id: idStore });
+        const newStore = await StoreModel.findOne({ _id: idStore })
+          .populate("idUser")
+          .populate("idAddress");
         res.json(newStore);
       });
     }
