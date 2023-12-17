@@ -40,6 +40,7 @@ exports.getListOrderModel = async (req, res) => {
 
     res.render("table/table_tong_doanh_thu_cua_hang", {
       listOrder: list,
+      formatNumberWithCommas:formatNumberWithCommas,
       totalOrder: formatNumberWithCommas(totalOrder),
     });
   } catch (err) {
@@ -122,6 +123,7 @@ exports.getlistOrderByDate = async (req, res) => {
     msg: msg,
     currentDate: check ? formatDate(day):"",
     formatDate: formatDate,
+    formatNumberWithCommas:formatNumberWithCommas,
     totalCurrentDate: formatNumberWithCommas(totalCurrentDate),
   });
 };
@@ -137,34 +139,25 @@ exports.getlistOrderByWeek = async (req, res) => {
       dayEnd == undefined
     ) {
       const current = moment();
-      const currentDayOfWeek = current.day();
-      const firstDayOfWeek = current.clone().startOf("week");
-
       const daysOfWeekFormatted = [];
-
-      for (let i = 1; i < 8; i++) {
-        const day = firstDayOfWeek.clone().add(i, "days");
+      for (let i = 0; i < 8; i++) {
+        const day = current.clone().startOf('isoWeek').add(i, 'days');
         const formattedDay = day.format("YYYY-MM-DD");
         daysOfWeekFormatted.push(formattedDay);
       }
-      console.log("Longmgmgm"+daysOfWeekFormatted);
-
       const listOrdersByWeek = await OrderModel.find({
-        createAt: { $gte: daysOfWeekFormatted[0], $lt: daysOfWeekFormatted[6] },
+        createAt: { $gte: daysOfWeekFormatted[0], $lte: daysOfWeekFormatted[7] },
         status: { $in: [3, 4] },
       })
         .populate("idUser")
         .populate("idStore");
-      console.log(
-        formatDate(daysOfWeekFormatted[0]) + "?" + daysOfWeekFormatted[6]
-      );
-
       var totalOrder = 0;
       listOrdersByWeek.forEach((item) => (totalOrder += parseInt(item.total)));
       res.render("table/table_tong_don_hang_theo_tuan", {
         list: listOrdersByWeek,
         formatDate: formatDate,
         msg: "",
+        formatNumberWithCommas:formatNumberWithCommas,
         totalOrder: formatNumberWithCommas(totalOrder),
         weekstart: formatDate(daysOfWeekFormatted[0]),
         weekend: formatDate(daysOfWeekFormatted[6]),
@@ -187,6 +180,7 @@ exports.getlistOrderByWeek = async (req, res) => {
         res.render("table/table_tong_don_hang_theo_tuan", {
           list: listOrdersByWeek,
           formatDate: formatDate,
+          formatNumberWithCommas:formatNumberWithCommas,
           msg: "",
           weekstart: dayStart,
           totalOrder: formatNumberWithCommas(totalOrder),
@@ -210,6 +204,7 @@ exports.getlistOrderByWeek = async (req, res) => {
           list: [],
           msg: msg,
           formatDate: formatDate,
+          formatNumberWithCommas:formatNumberWithCommas,
           weekstart: dayStart,
           totalOrder: formatNumberWithCommas(0),
           weekend: dayEnd,
@@ -230,7 +225,7 @@ exports.getListTotalOrder = async (req, res) => {
       console.log(item);
     }
   });
-  res.render("table/table_tong_don_hang", { list: listTotalOrder });
+  res.render("table/table_tong_don_hang", { list: listTotalOrder,formatNumberWithCommas:formatNumberWithCommas });
 };
 
 exports.getlistOrderByMonth = async (req, res) => {
@@ -278,6 +273,7 @@ exports.getlistOrderByMonth = async (req, res) => {
   res.render("table/table_tong_don_hang_thang", {
     list: listOrdersByMonth,
     month: monthCurrent,
+    formatNumberWithCommas:formatNumberWithCommas,
     formatDate: formatDate,
     totalOrder: formatNumberWithCommas(totalOrder),
   });
@@ -311,6 +307,7 @@ exports.getlistOrderByYear = async (req, res) => {
     list: listOrdersByYear,
     year: year,
     formatDate: formatDate,
+    formatNumberWithCommas:formatNumberWithCommas,
     total: formatNumberWithCommas(total),
   });
 };

@@ -57,24 +57,37 @@ exports.data = async (req, res) => {
   // Tổng doanh thu tuần 
 
   const current = moment();
-  const currentDayOfWeek = current.day();
-
-  const firstDayOfWeek = current.clone().startOf('week');
-  
   const daysOfWeekFormatted = [];
-  
-  for (let i = 1; i < 8; i++) {
-    const day = firstDayOfWeek.clone().add(i, 'days');
-    const formattedDay = day.format('YYYY-MM-DD');
+  for (let i = 0; i < 8; i++) {
+    const day = current.clone().startOf('isoWeek').add(i, 'days');
+    const formattedDay = day.format("YYYY-MM-DD");
     daysOfWeekFormatted.push(formattedDay);
   }
-  
-  console.log(daysOfWeekFormatted);
-
   const listOrdersByWeek = await OrderModel.find({
-    createAt: { $gte: daysOfWeekFormatted[0], $lt: daysOfWeekFormatted[6] },
+    createAt: { $gte: daysOfWeekFormatted[0], $lte: daysOfWeekFormatted[7] },
     status: { $in: [3, 4] },
-  });
+  })
+    .populate("idUser")
+    .populate("idStore");
+
+
+
+  
+  // const daysOfWeekFormatted = [];
+  
+  // for (let i = 1; i < 8; i++) {
+  //   const day = current.clone().startOf('isoWeek').add(i, 'days');
+  //   const formattedDay = day.format('YYYY-MM-DD');
+  //   daysOfWeekFormatted.push(formattedDay);
+  //   console.log(formattedDay+"Logmmg");
+  // }
+  
+  // console.log(daysOfWeekFormatted);
+
+  // const listOrdersByWeek = await OrderModel.find({
+  //   createAt: { $gte: daysOfWeekFormatted[0], $lt: daysOfWeekFormatted[7] },
+  //   status: { $in: [3, 4] },
+  // });
   var totalByWeek = 0
 
   listOrdersByWeek.forEach((item)=>{

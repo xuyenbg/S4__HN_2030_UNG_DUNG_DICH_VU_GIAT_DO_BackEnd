@@ -169,6 +169,23 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
+          <a class="nav-link collapsed" href="/order/listOrderByDate">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Doanh thu ngày</span>
+          </a>
+          <a class="nav-link collapsed" href="/order/listOrderByWeek">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Doanh thu tuần</span>
+          </a>
+          <a class="nav-link collapsed" href="/order/listOrderByMonth">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Doanh thu tháng</span>
+          </a>
+          <a class="nav-link collapsed" href="/order/listOrderByYear">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Doanh thu năm</span>
+          </a>
+          <hr class="sidebar-divider" />
           <a class="nav-link" href="/categories">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Categories</span></a
@@ -535,7 +552,7 @@
                         <td><%=index+1%></td>
                         <td><%=element.idStore.name%></td>
                         
-                        <td><%=element.total%></td>
+                        <td><%=formatNumberWithCommas(element.total)%></td>
                         <td><%=element.countOrder%></td>
                         <% if(element.idStore.status === 0){ %>
                         <td><p>Đang đóng cửa</p></td>

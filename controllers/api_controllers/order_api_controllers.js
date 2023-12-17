@@ -774,10 +774,12 @@ exports.thongKeTheoTuan = async (req, res) => {
   
   
     var danhSachNgayTrongTuan = [];
-    
-    for (let i = 1; i < 8; i++) {
-      const day = firstDayOfWeek.clone().add(i, "days");
+    console.log(firstDayOfWeek);
+    for (let i = 0; i < 7; i++) {
+      
+      const day = current.clone().startOf('isoWeek').add(i, 'days');
       const formattedDay = day.format("YYYY-MM-DD");
+      console.log(formattedDay);
       const listOrdersByWeek = await OrderModel.find({
         idStore: req.params.idStore,
         status: { $in: [3, 4] },
@@ -790,6 +792,7 @@ exports.thongKeTheoTuan = async (req, res) => {
         const month = timestamp.getUTCMonth() + 1;
         const day = timestamp.getUTCDate();
         const date = year + "-" + month + "-" + day;
+        
         if (date == formattedDay) {
           listOrderByDay.push(item)
         }
@@ -799,7 +802,7 @@ exports.thongKeTheoTuan = async (req, res) => {
       
       danhSachNgayTrongTuan.push({
         date:formattedDay,
-        day:i === 7 ? "Chủ nhật":"Thứ "+(i+1),
+        day:i === 6 ? "Chủ nhật":"Thứ "+(i+2),
         total:total
       })
       listOrderByDay= []

@@ -63,6 +63,8 @@
           >
         </li>
 
+        
+
         <!-- Divider -->
         <!-- <hr class="sidebar-divider" /> -->
 
@@ -168,6 +170,33 @@
         </li> -->
 
         <!-- Nav Item - Charts -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="/order/listOrderByDate">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Doanh thu ngày</span>
+          </a>
+        </li>
+
+        <li class="nav-item ">
+          <a class="nav-link collapsed" href="/order/listOrderByWeek">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Doanh thu tuần</span>
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link collapsed" href="/order/listOrderByMonth">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Doanh thu tháng</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link collapsed" href="/order/listOrderByYear">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Doanh thu năm</span>
+          </a>
+        </li>
+
+        <hr class="sidebar-divider" />
         <li class="nav-item">
           <a class="nav-link" href="/categories">
             <i class="fas fa-fw fa-chart-area"></i>
@@ -543,7 +572,7 @@
                         <td><%=index+1%></td>
                         <!-- <td><%=element.idUser._id%></td> -->
                         <td><%=element.idUser.fullname%></td>
-                        <td><%=element.total%></td>
+                        <td><%=formatNumberWithCommas(element.total)%></td>
                         <td><%=formatDate(element.createAt)%></td>
 
                       </tr>
