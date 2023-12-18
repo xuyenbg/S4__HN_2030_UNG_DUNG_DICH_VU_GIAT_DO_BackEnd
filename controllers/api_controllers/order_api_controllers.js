@@ -714,21 +714,53 @@ exports.getTotalByWeekMonth = async (req, res) => {
     const idStore = req.params.idStore;
 
     let startDate, endDate;
+    var listOrdersByWeek = [];
 
     if (!isNaN(week)) {
-      const today = moment();
-      const currentYear = today.year();
-      const currentMonth = today.month() + 1;
+      const current = moment();
 
-      const firstDayOfMonth = moment(
-        `${currentYear}-${currentMonth}-02`,
-        "YYYY-MM-DD"
-      );
-      const startOfWeek = firstDayOfMonth.clone().add(week - 1, "weeks");
-      const endOfWeek = startOfWeek.clone().add(5, "days").endOf("day");
+      var danhSachNgayTrongTuan = [];
+      for (let i = 0; i < 7; i++) {
+        const day = current.clone().startOf("isoWeek").add(i, "days");
+        const formattedDay = day.format("YYYY-MM-DD");
+        // console.log(formattedDay);
+        listOrdersByWeek = await OrderModel.find({
+          idStore: req.params.idStore,
+          status: { $in: [3, 4] },
+        })
+          .populate("idUser")
+          .populate("idStore");
+        var listOrderByDay = [];
+        listOrdersByWeek.forEach((item) => {
+          const timestamp = new Date(item.createAt);
+          const year = timestamp.getUTCFullYear();
+          const month = timestamp.getUTCMonth() + 1;
+          const day = timestamp.getUTCDate();
+          const date = year + "-" + month + "-" + day;
 
-      startDate = startOfWeek.startOf("day").toDate();
-      endDate = endOfWeek.endOf("day").toDate();
+          if (date == formattedDay) {
+            listOrderByDay.push(item);
+          }
+        });
+        var total = 0;
+        listOrderByDay.forEach((item) => (total += item.total));
+
+        danhSachNgayTrongTuan.push({
+          date: formattedDay,
+          day: i === 6 ? "Chủ nhật" : "Thứ " + (i + 2),
+          total: total,
+        });
+        listOrderByDay = [];
+      }
+
+      var total = 0;
+      danhSachNgayTrongTuan.forEach((item) => {
+        total += item.total;
+      });
+
+      console.log(danhSachNgayTrongTuan);
+
+      res.json({ total: total, totalOrder: danhSachNgayTrongTuan.length });
     } else if (!isNaN(month)) {
       const today = moment();
       const currentYear = today.year();
@@ -739,28 +771,19 @@ exports.getTotalByWeekMonth = async (req, res) => {
         .endOf("month")
         .endOf("day")
         .toDate();
-    } else {
-      // return res.status(404).send("Not Found");
-      const today = moment();
-      const startOfWeek = today.clone().startOf("week");
-      const endOfWeek = today.clone().endOf("week");
 
-      startDate = startOfWeek.toDate();
-      endDate = endOfWeek.toDate();
+      const orders = await OrderModel.find({
+        idStore: idStore,
+        createAt: { $gte: startDate, $lt: endDate },
+        status: { $in: [3, 4] },
+      });
+
+      console.log(orders);
+
+      const totalAmount = orders.reduce((sum, order) => sum + order.total, 0);
+
+      res.json({ total: totalAmount, totalOrder: orders.length });
     }
-
-    console.log(startDate);
-    console.log(endDate);
-
-    const orders = await OrderModel.find({
-      idStore: idStore,
-      createAt: { $gte: startDate, $lt: endDate },
-      status: { $in: [3, 4] },
-    });
-
-    const totalAmount = orders.reduce((sum, order) => sum + order.total, 0);
-
-    res.json({ total: totalAmount, totalOrder: orders.length });
   } catch (err) {
     res.status(500).send("Có lỗi xảy ra");
     console.log(err);
@@ -771,47 +794,45 @@ exports.thongKeTheoTuan = async (req, res) => {
   try {
     const current = moment();
     const firstDayOfWeek = current.clone().startOf("week");
-  
-  
+
     var danhSachNgayTrongTuan = [];
     console.log(firstDayOfWeek);
     for (let i = 0; i < 7; i++) {
-      
-      const day = current.clone().startOf('isoWeek').add(i, 'days');
+      const day = current.clone().startOf("isoWeek").add(i, "days");
       const formattedDay = day.format("YYYY-MM-DD");
       console.log(formattedDay);
       const listOrdersByWeek = await OrderModel.find({
         idStore: req.params.idStore,
         status: { $in: [3, 4] },
-      }) .populate("idUser")
-      .populate("idStore");
-      var listOrderByDay = []
-      listOrdersByWeek.forEach((item)=>{
+      })
+        .populate("idUser")
+        .populate("idStore");
+      var listOrderByDay = [];
+      listOrdersByWeek.forEach((item) => {
         const timestamp = new Date(item.createAt);
         const year = timestamp.getUTCFullYear();
         const month = timestamp.getUTCMonth() + 1;
         const day = timestamp.getUTCDate();
         const date = year + "-" + month + "-" + day;
-        
+
         if (date == formattedDay) {
-          listOrderByDay.push(item)
+          listOrderByDay.push(item);
         }
-      })
+      });
       var total = 0;
-      listOrderByDay.forEach((item)=>total+=item.total)
-      
+      listOrderByDay.forEach((item) => (total += item.total));
+
       danhSachNgayTrongTuan.push({
-        date:formattedDay,
-        day:i === 6 ? "Chủ nhật":"Thứ "+(i+2),
-        total:total
-      })
-      listOrderByDay= []
+        date: formattedDay,
+        day: i === 6 ? "Chủ nhật" : "Thứ " + (i + 2),
+        total: total,
+      });
+      listOrderByDay = [];
     }
     console.log(danhSachNgayTrongTuan);
-  
+
     res.status(200).json(danhSachNgayTrongTuan);
   } catch (error) {
-    res.stutas(500).send("Có lỗi xảy ra")
+    res.stutas(500).send("Có lỗi xảy ra");
   }
- 
 };
