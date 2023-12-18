@@ -126,37 +126,36 @@
             <!-- Nav Item - Charts -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/order/listOrderByDate">
-                  <i class="fas fa-chart-bar"></i>
-                  <span>Doanh thu ngày</span>
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Doanh thu ngày</span>
                 </a>
-              </li>
-      
-              <li class="nav-item ">
+            </li>
+
+            <li class="nav-item ">
                 <a class="nav-link collapsed" href="/order/listOrderByWeek">
-                  <i class="fas fa-chart-bar"></i>
-                  <span>Doanh thu tuần</span>
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Doanh thu tuần</span>
                 </a>
-              </li>
-              <li class="nav-item ">
+            </li>
+            <li class="nav-item ">
                 <a class="nav-link collapsed" href="/order/listOrderByMonth">
-                  <i class="fas fa-chart-bar"></i>
-                  <span>Doanh thu tháng</span>
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Doanh thu tháng</span>
                 </a>
-              </li>
-              <li class="nav-item">
+            </li>
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="/order/listOrderByYear">
-                  <i class="fas fa-chart-bar"></i>
-                  <span>Doanh thu năm</span>
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Doanh thu năm</span>
                 </a>
-              </li>
-      
-              <hr class="sidebar-divider" />
-              <li class="nav-item active">
+            </li>
+
+            <hr class="sidebar-divider" />
+            <li class="nav-item active">
                 <a class="nav-link" href="/categories">
-                  <i class="fas fa-project-diagram"></i>
-                  <span>Thể loại dịch vụ</span></a
-                >
-              </li>
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Thể loại dịch vụ</span></a>
+            </li>
 
             <!-- Nav Item - Tables -->
             <!-- <li class="nav-item">
@@ -431,7 +430,10 @@
                                                     <%= element.name %>
                                                 </td>
                                                 <td class="justify-content-center d-flex">
-                                                    <img src="https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com<%= element.image %>" alt="" height="100">
+                                                    <img id="image"
+                                                        src="https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com<%= element.image %>"
+                                                        alt="https://cdn-icons-png.flaticon.com/512/11168/11168361.png"
+                                                        height="100" onerror="handleImageError(this)">
                                                 </td>
                                                 <td><a href="/categories/edit/<%= element._id %>"
                                                         class="btn btn-warning btn-icon-split">
@@ -511,6 +513,13 @@
 
     <!-- Page level custom scripts -->
     <script src="/js/demo/datatables-demo.js"></script>
+
+    <script>
+        function handleImageError(image) {
+            // Thay đổi nguồn hình ảnh của thẻ <img> thành ảnh mặc định nếu hình ảnh không tồn tại
+            image.src = 'https://cdn-icons-png.flaticon.com/512/11168/11168361.png';
+        }
+    </script>
 
 </body>
 

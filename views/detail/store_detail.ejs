@@ -379,7 +379,7 @@
                 <div class="col-md-6">
                   <img class="card-img-top mb-5 mb-md-0" id="image"
                     src="https://s4-hn-2030-ung-dung-dich-vu-giat-do.onrender.com<%= objStore.image %>"
-                    alt="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" />
+                    alt="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" onerror="handleImageError()" />
                 </div>
                 <div class="col-md-6">
                   <div class="small mb-1"></div>
@@ -510,6 +510,12 @@
 
   <!-- Page level plugins -->
   <script src="/vendor/chart.js/Chart.min.js"></script>
+
+  <script>
+    function handleImageError() {
+      document.getElementById('image').src = 'https://dummyimage.com/600x700/dee2e6/6c757d.jpg'
+    }
+  </script>
 </body>
 
 </html>
